@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biblioteca Escolar — Painel do Bibliotecário</title>
   <link rel="stylesheet" href="style-bibliotecario.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -174,8 +174,9 @@
         </div>
 
         <div class="search-bar">
+          <label class="sr-only" for="searchAcervo">Pesquisar no acervo</label>
           <svg class="search-icon" viewBox="0 0 20 20" fill="none"><path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625" stroke="currentColor" stroke-width="1.5"/></svg>
-          <input type="text" id="searchAcervo" placeholder="Pesquisar livro por título ou autor..." />
+          <input type="text" id="searchAcervo" placeholder="Pesquisar livro por título ou autor..." aria-label="Pesquisar livro por título ou autor" />
         </div>
 
         <div class="book-table-wrapper">
@@ -201,7 +202,7 @@
           <form onsubmit="registrarEmprestimo(event)">
             <div class="field-row">
               <div class="field-group"><label>Usuário (matrícula ou e-mail) *</label><input type="text" id="emprestimoUsuario" required list="usuariosList" /><datalist id="usuariosList"></datalist></div>
-              <div class="field-group"><label>Livro *</label><select id="emprestimoLivro" required><option value="">Selecione</option></select></div>
+              <div class="field-group"><label for="emprestimoLivro">Livro *</label><select id="emprestimoLivro" required aria-label="Selecione o livro"><option value="">Selecione</option></select></div>
             </div>
             <div class="field-row">
               <div class="field-group"><label>Data empréstimo *</label><input type="date" id="emprestimoDataInicio" required /></div>
@@ -287,8 +288,9 @@
         </div>
 
         <div class="search-bar">
+          <label class="sr-only" for="searchUsuario">Buscar usuários</label>
           <svg class="search-icon" viewBox="0 0 20 20" fill="none"><path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625" stroke="currentColor" stroke-width="1.5"/></svg>
-          <input type="text" id="searchUsuario" placeholder="Buscar por nome, matrícula ou e-mail..." />
+          <input type="text" id="searchUsuario" placeholder="Buscar por nome, matrícula ou e-mail..." aria-label="Buscar por nome, matrícula ou e-mail" />
         </div>
 
         <div class="users-grid" id="usersGrid"></div>

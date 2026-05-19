@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Escolar — Minhas Multas</title>
+  <link rel="stylesheet" href="style-multas.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+
+  <header class="dashboard-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon-sm"><svg viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/><rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/></svg></div>
+        <span class="logo-text-dark">Bibliotheca</span>
+        <span class="badge-aluno">Aluno</span>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-link" onclick="window.location.href='dashboard-aluno.html'">📚 Início</button>
+        <button class="nav-link" onclick="window.location.href='perfil-usuario.html'">👤 Meu Perfil</button>
+        <button class="nav-link" onclick="window.location.href='calendario-biblioteca.html'">📅 Calendário</button>
+        <button class="nav-link active" onclick="window.location.href='multas-usuario.html'">💰 Multas</button>
+      </nav>
+      <div class="user-menu">
+        <div class="user-avatar"><span class="avatar-initials">AM</span></div>
+        <div class="user-info"><span class="user-name">Ana Martins</span><span class="user-role">Aluno</span></div>
+        <button class="logout-btn" onclick="showToast('Sessão encerrada!')"><svg viewBox="0 0 20 20" fill="none"><path d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10" stroke="currentColor" stroke-width="1.5"/></svg><span>Sair</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="main-container">
+
+      <div class="multas-header">
+        <h1>💰 Central de Multas</h1>
+        <p>Gerencie seus débitos e mantenha suas contas em dia</p>
+      </div>
+
+      <!-- Resumo financeiro -->
+      <div class="resumo-financeiro">
+        <div class="resumo-card total">
+          <span class="resumo-label">Total em débito</span>
+          <span class="resumo-valor" id="totalDebito">R$ 0,00</span>
+        </div>
+        <div class="resumo-card pagas">
+          <span class="resumo-label">Multas pagas</span>
+          <span class="resumo-valor" id="totalPagas">R$ 0,00</span>
+        </div>
+        <div class="resumo-card pendentes">
+          <span class="resumo-label">Multas pendentes</span>
+          <span class="resumo-valor" id="totalPendentes">R$ 0,00</span>
+        </div>
+      </div>
+
+      <!-- Lista de multas -->
+      <div class="card full-width">
+        <div class="card-header"><h3>📋 Minhas Multas</h3></div>
+        <div class="multas-table-wrapper">
+          <table class="multas-table" id="multasTable">
+            <thead><tr><th>Data</th><th>Livro</th><th>Motivo</th><th>Valor</th><th>Status</th><th>Ação</th></tr></thead>
+            <tbody id="multasBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagamento rápido (simulado) -->
+      <div class="payment-card">
+        <div class="payment-info">
+          <div class="payment-icon">💳</div>
+          <div><h3>Pagamento rápido</h3><p>Selecione as multas que deseja pagar</p></div>
+        </div>
+        <div class="payment-actions">
+          <select id="selectMultaPagamento"><option value="">Selecione uma multa</option></select>
+          <button class="btn-pagar" onclick="pagarMulta()">Pagar agora</button>
+        </div>
+      </div>
+
+      <!-- Instruções -->
+      <div class="info-card">
+        <div class="info-icon">ℹ️</div>
+        <div class="info-content">
+          <h4>Como funcionam as multas?</h4>
+          <p>• Multa por atraso: R$ 0,50 por dia de atraso (até R$ 30,00 por livro)</p>
+          <p>• Multa por dano: Valor definido pelo bibliotecário conforme avaliação</p>
+          <p>• Multa por extravio: Valor do livro + 20% de taxa administrativa</p>
+          <p>• Pagamentos podem ser realizados na biblioteca ou via PIX (em breve)</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5"/></svg><span id="toast-msg"></span></div>
+
+  <script>
+    // Sistema de multas sem banco de dados - localStorage
+    let multas = [];
+
+    function carregarMultas() {
+      const salvo = localStorage.getItem('multas_usuario');
+      if (salvo) {
+        multas = JSON.parse(salvo);
+      } else {
+        // Multas de exemplo
+        multas = [
+          { id: 1, data: "2025-06-15", livro: "O Nome do Vento", motivo: "Atraso de 5 dias", valor: 2.50, status: "pendente" },
+          { id: 2, data: "2025-05-20", livro: "O Pequeno Príncipe", motivo: "Atraso de 3 dias", valor: 1.50, status: "pago" },
+          { id: 3, data: "2025-06-10", livro: "Duna", motivo: "Dano na capa", valor: 5.00, status: "pendente" }
+        ];
+        salvarMultas();
+      }
+      renderMultas();
+    }
+
+    function salvarMultas() {
+      localStorage.setItem('multas_usuario', JSON.stringify(multas));
+    }
+
+    // Função para o bibliotecário adicionar multa (simulada)
+    function adicionarMulta(livro, motivo, valor) {
+      const novaMulta = {
+        id: Date.now(),
+        data: new Date().toISOString().split('T')[0],
+        livro: livro,
+        motivo: motivo,
+        valor: parseFloat(valor),
+        status: "pendente"
+      };
+      multas.push(novaMulta);
+      salvarMultas();
+      renderMultas();
+      showToast(`Multa de R$ ${valor} adicionada para o livro "${livro}"`);
+    }
+
+    function pagarMulta() {
+      const select = document.getElementById('selectMultaPagamento');
+      const multaId = parseInt(select.value);
+      if (!multaId) { showToast('Selecione uma multa para pagar', 'error'); return; }
+      
+      const multa = multas.find(m => m.id === multaId);
+      if (multa && multa.status === 'pendente') {
+        multa.status = 'pago';
+        salvarMultas();
+        renderMultas();
+        showToast(`Multa de R$ ${multa.valor.toFixed(2)} paga com sucesso!`);
+      }
+    }
+
+    function renderMultas() {
+      const tbody = document.getElementById('multasBody');
+      const totalDebito = multas.reduce((sum, m) => sum + m.valor, 0);
+      const totalPendentes = multas.filter(m => m.status === 'pendente').reduce((sum, m) => sum + m.valor, 0);
+      const totalPagas = multas.filter(m => m.status === 'pago').reduce((sum, m) => sum + m.valor, 0);
+      
+      document.getElementById('totalDebito').textContent = `R$ ${totalDebito.toFixed(2)}`;
+      document.getElementById('totalPendentes').textContent = `R$ ${totalPendentes.toFixed(2)}`;
+      document.getElementById('totalPagas').textContent = `R$ ${totalPagas.toFixed(2)}`;
+      
+      tbody.innerHTML = multas.map(m => `
+        <tr>
+          <td>${new Date(m.data).toLocaleDateString('pt-BR')}</td>
+          <td><strong>${m.livro}</strong></td>
+          <td>${m.motivo}</td>
+          <td>R$ ${m.valor.toFixed(2)}</td>
+          <td><span class="status-badge ${m.status === 'pago' ? 'pago' : 'pendente'}">${m.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
+          <td>${m.status === 'pendente' ? `<button class="btn-pagar-multa" onclick="pagarMultaId(${m.id})">Pagar</button>` : '-'}</td>
+        </tr>
+      `).join('');
+      
+      // Atualizar select de pagamento
+      const select = document.getElementById('selectMultaPagamento');
+      const multasPendentes = multas.filter(m => m.status === 'pendente');
+      select.innerHTML = '<option value="">Selecione uma multa</option>' + 
+        multasPendentes.map(m => `<option value="${m.id}">${m.livro} - R$ ${m.valor.toFixed(2)}</option>`).join('');
+    }
+
+    function pagarMultaId(id) {
+      const multa = multas.find(m => m.id === id);
+      if (multa && multa.status === 'pendente') {
+        multa.status = 'pago';
+        salvarMultas();
+        renderMultas();
+        showToast(`Multa de R$ ${multa.valor.toFixed(2)} paga com sucesso!`);
+      }
+    }
+
+    // Simular adição de multa pelo bibliotecário (para demonstração)
+    function simularAdicaoMulta() {
+      const livrosExemplo = ["1984", "Dom Quixote", "Fundação", "Neuromancer", "Verity"];
+      const livro = livrosExemplo[Math.floor(Math.random() * livrosExemplo.length)];
+      const motivos = ["Atraso de 7 dias", "Atraso de 10 dias", "Dano na página 45", "Extravio de livro"];
+      const motivo = motivos[Math.floor(Math.random() * motivos.length)];
+      const valor = motivo.includes("Atraso") ? 3.50 : motivo.includes("Dano") ? 8.00 : 45.00;
+      adicionarMulta(livro, motivo, valor);
+    }
+
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.className = 'toast', 3000);
+    }
+
+    // Inicialização
+    carregarMultas();
+    
+    // Botão de demonstração para bibliotecário (remover em produção)
+    console.log('💡 Dica: Para testar, execute simularAdicaoMulta() no console para adicionar multas automaticamente');
+    
+    window.pagarMulta = pagarMulta;
+    window.pagarMultaId = pagarMultaId;
+    window.adicionarMulta = adicionarMulta;
+    window.simularAdicaoMulta = simularAdicaoMulta;
+    window.showToast = showToast;
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Escolar — Meu Perfil</title>
+  <link rel="stylesheet" href="style-perfil.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon-sm">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/>
+            <rect x="8" y="27" width="32" height="4" rx="2" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="logo-text-dark">Bibliotheca</span>
+        <span class="badge-aluno">Aluno</span>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-link" onclick="window.location.href='dashboard-aluno.html'">📚 Início</button>
+        <button class="nav-link active" onclick="window.location.href='perfil-usuario.html'">👤 Meu Perfil</button>
+        <button class="nav-link" onclick="window.location.href='calendario-biblioteca.html'">📅 Calendário</button>
+        <button class="nav-link" onclick="window.location.href='multas-usuario.html'">💰 Multas</button>
+      </nav>
+      <div class="user-menu">
+        <div class="user-avatar"><span class="avatar-initials">AM</span></div>
+        <div class="user-info"><span class="user-name">Ana Martins</span><span class="user-role">Aluno · Matrícula 20241023</span></div>
+        <button class="logout-btn" onclick="showToast('Sessão encerrada!')"><svg viewBox="0 0 20 20" fill="none"><path d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10" stroke="currentColor" stroke-width="1.5"/></svg><span>Sair</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="main-container">
+
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <div class="profile-avatar-large">
+          <div class="avatar-edit">
+            <span class="avatar-initials-lg">AM</span>
+            <button class="edit-avatar-btn" onclick="showToast('Edição de avatar em breve!')">✏️</button>
+          </div>
+        </div>
+        <div class="profile-info">
+          <h1>Ana Martins</h1>
+          <p class="profile-meta">📧 ana.martins@escola.edu.br | 🆔 Matrícula: 20241023 | 🎂 15/03/2008</p>
+          <div class="profile-badges">
+            <span class="badge">⭐ Leitor Bronze</span>
+            <span class="badge">📚 Membro desde 2024</span>
+            <span class="badge">🎯 Meta: 15 livros/ano</span>
+          </div>
+        </div>
+        <button class="btn-edit-profile" onclick="showToast('Edição de perfil em breve!')">Editar Perfil</button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">📖</div><div class="stat-content"><span class="stat-number" id="totalPaginas">2.847</span><span class="stat-label">Páginas lidas</span></div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-content"><span class="stat-number" id="totalResenhas">12</span><span class="stat-label">Resenhas escritas</span></div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-content"><span class="stat-number" id="desafioCompletado">3</span><span class="stat-label">Desafios completados</span></div></div>
+        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-content"><span class="stat-number" id="metaProgresso">8</span><span class="stat-label">/15 livros (meta anual)</span></div></div>
+      </div>
+
+      <!-- Estante Virtual e Metas -->
+      <div class="grid-2col">
+        <!-- Estante Virtual -->
+        <div class="card">
+          <div class="card-header"><h3>📚 Minha Estante Virtual</h3><button class="link-sm" onclick="showToast('Adicionar livro à estante')">+ Adicionar</button></div>
+          <div class="bookshelf" id="bookshelf"></div>
+        </div>
+
+        <!-- Metas de Leitura -->
+        <div class="card">
+          <div class="card-header"><h3>🎯 Minhas Metas</h3><button class="link-sm" onclick="showToast('Nova meta personalizada')">+ Nova Meta</button></div>
+          <div class="goals-list">
+            <div class="goal-item"><div class="goal-info"><strong>Meta anual 2025</strong><span>15 livros</span></div><div class="goal-progress"><div class="progress-bar" style="width: 53%"></div><span>8/15</span></div></div>
+            <div class="goal-item"><div class="goal-info"><strong>Desafio de Férias</strong><span>Janeiro-Fevereiro</span></div><div class="goal-progress"><div class="progress-bar" style="width: 75%"></div><span>3/4</span></div></div>
+            <div class="goal-item"><div class="goal-info"><strong>Gênero do mês: Fantasia</strong><span>Metas: 2 livros</span></div><div class="goal-progress"><div class="progress-bar" style="width: 100%"></div><span>2/2 ✅</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resenhas e Atividades Recentes -->
+      <div class="grid-2col">
+        <div class="card">
+          <div class="card-header"><h3>✍️ Minhas Últimas Resenhas</h3><button class="link-sm" onclick="showToast('Nova resenha')">+ Escrever</button></div>
+          <div class="reviews-list" id="reviewsList"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🏅 Conquistas</h3></div>
+          <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
+      </div>
+
+      <!-- Configurações do Perfil -->
+      <div class="card full-width">
+        <div class="card-header"><h3>⚙️ Preferências do Perfil</h3></div>
+        <div class="preferences-form">
+          <div class="field-row">
+            <div class="field-group"><label>Notificações por e-mail</label><select id="notificacoes"><option value="sim">Sim</option><option value="nao">Não</option></select></div>
+            <div class="field-group"><label>Tema da biblioteca</label><select id="tema"><option value="claro">Claro</option><option value="escuro">Escuro</option></select></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Idioma preferido</label><select id="idioma"><option value="pt">Português</option><option value="en">English</option></select></div>
+            <div class="field-group"><label>Gêneros favoritos</label><input type="text" value="Fantasia, Ficção Científica, Aventura" /></div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Preferências salvas!')">Salvar preferências</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5"/></svg><span id="toast-msg"></span></div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.className = 'toast show';
+      setTimeout(() => toast.className = 'toast', 3000);
+    }
+
+    // Estante virtual
+    const estanteLivros = [
+      { titulo: "O Nome do Vento", status: "lido", cor: "#3d6644" },
+      { titulo: "1984", status: "lendo", cor: "#2c4a30" },
+      { titulo: "Dom Quixote", status: "quero", cor: "#c9a84c" },
+      { titulo: "Duna", status: "lido", cor: "#4a7d52" },
+      { titulo: "O Hobbit", status: "lendo", cor: "#e0c47a" },
+      { titulo: "Fahrenheit 451", status: "quero", cor: "#5a9462" }
+    ];
+
+    const bookshelf = document.getElementById('bookshelf');
+    if (bookshelf) {
+      bookshelf.innerHTML = estanteLivros.map(book => `
+        <div class="book-spine" style="background: ${book.cor}" onclick="showToast('${book.titulo} - ${book.status === 'lido' ? 'Já lido' : book.status === 'lendo' ? 'Em leitura' : 'Na lista'}')">
+          ${book.titulo.substring(0, 15)}
+          <span class="book-status">${book.status === 'lido' ? '✓' : book.status === 'lendo' ? '⋯' : '☆'}</span>
+        </div>
+      `).join('');
+    }
+
+    // Resenhas
+    const reviewsList = document.getElementById('reviewsList');
+    if (reviewsList) {
+      reviewsList.innerHTML = `
+        <div class="review-item"><strong>O Nome do Vento</strong><span>⭐⭐⭐⭐⭐</span><p>"Uma obra prima da fantasia moderna. Personagens cativantes e uma história envolvente!"</p><span class="review-date">15/06/2025</span></div>
+        <div class="review-item"><strong>1984</strong><span>⭐⭐⭐⭐</span><p>"Assustadoramente atual. Leitura essencial para entender sociedade e vigilância."</p><span class="review-date">02/05/2025</span></div>
+      `;
+    }
+
+    // Conquistas
+    const achievementsGrid = document.getElementById('achievementsGrid');
+    if (achievementsGrid) {
+      achievementsGrid.innerHTML = `
+        <div class="achievement"><div class="achievement-icon">📖</div><span>10 livros lidos</span><div class="achievement-date">Maio/2025</div></div>
+        <div class="achievement"><div class="achievement-icon">✍️</div><span>Primeira resenha</span><div class="achievement-date">Mar/2025</div></div>
+        <div class="achievement"><div class="achievement-icon">🏆</div><span>Desafio completo</span><div class="achievement-date">Jan/2025</div></div>
+        <div class="achievement"><div class="achievement-icon">⭐</div><span>Avaliador frequente</span><div class="achievement-date">Abr/2025</div></div>
+      `;
+    }
+
+    window.showToast = showToast;
+  </script>
+</body>
+</html>
+

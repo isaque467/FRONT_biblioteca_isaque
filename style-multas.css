@@ -1,0 +1,564 @@
+/* ============================================
+   SISTEMA DE MULTAS - BIBLIOTECA ESCOLAR
+   Identidade: verde-musgo + creme + dourado
+============================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  :root {
+    --verde-escuro:  #1a2e1f;
+    --verde-medio:   #2c4a30;
+    --verde-claro:   #3d6644;
+    --verde-hover:   #4a7d52;
+    --dourado:       #c9a84c;
+    --dourado-light: #e0c47a;
+    --creme:         #f5f0e8;
+    --creme-dark:    #ede5d4;
+    --branco:        #fdfaf5;
+    --texto-escuro:  #1a1a1a;
+    --texto-medio:   #4a4a4a;
+    --texto-leve:    #888;
+    --borda:         #d8ceba;
+    --erro:          #c0392b;
+    --sucesso:       #27ae60;
+    --aviso:         #e67e22;
+    --info:          #3498db;
+    --sombra:        0 20px 60px rgba(0,0,0,0.12);
+    --sombra-card:   0 4px 20px rgba(0,0,0,0.08);
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'DM Sans', -apple-system, sans-serif;
+    --radius:       14px;
+    --radius-sm:    8px;
+  }
+  
+  body {
+    font-family: var(--font-body);
+    background: var(--creme);
+    color: var(--texto-escuro);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .bg-pattern {
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 15% 85%, rgba(201,168,76,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 85% 15%, rgba(44,74,48,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .bg-glow {
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  /* Header */
+  .dashboard-header {
+    background: var(--branco);
+    border-bottom: 1px solid var(--borda);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  
+  .header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .logo-icon-sm {
+    width: 38px;
+    height: 38px;
+    color: var(--verde-escuro);
+  }
+  
+  .logo-text-dark {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--verde-escuro);
+  }
+  
+  .badge-aluno {
+    background: var(--dourado);
+    color: var(--verde-escuro);
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 40px;
+    font-weight: 700;
+  }
+  
+  .main-nav {
+    display: flex;
+    gap: 6px;
+    background: var(--creme-dark);
+    padding: 5px;
+    border-radius: 60px;
+    flex-wrap: wrap;
+  }
+  
+  .nav-link {
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--texto-medio);
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .nav-link.active {
+    background: var(--branco);
+    color: var(--verde-escuro);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-weight: 600;
+  }
+  
+  .nav-link:hover:not(.active) {
+    color: var(--verde-claro);
+    background: rgba(44,74,48,0.05);
+  }
+  
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .user-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--dourado);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--verde-escuro);
+    font-weight: 700;
+  }
+  
+  .avatar-initials {
+    font-size: 1.1rem;
+  }
+  
+  .user-info {
+    text-align: right;
+  }
+  
+  .user-name {
+    font-weight: 600;
+    color: var(--texto-escuro);
+    font-size: 0.9rem;
+  }
+  
+  .user-role {
+    font-size: 0.7rem;
+    color: var(--texto-leve);
+  }
+  
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--borda);
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .logout-btn:hover {
+    background: var(--creme-dark);
+    border-color: var(--verde-claro);
+  }
+  
+  /* Main */
+  .dashboard-main {
+    position: relative;
+    z-index: 2;
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* Multas Header */
+  .multas-header {
+    margin-bottom: 32px;
+  }
+  
+  .multas-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--verde-escuro);
+    margin-bottom: 8px;
+  }
+  
+  .multas-header p {
+    color: var(--texto-leve);
+    font-size: 0.9rem;
+  }
+  
+  /* Resumo Financeiro */
+  .resumo-financeiro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  
+  .resumo-card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    border: 1px solid var(--borda);
+    box-shadow: var(--sombra-card);
+    transition: transform 0.2s;
+  }
+  
+  .resumo-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .resumo-card.total {
+    background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-medio) 100%);
+    color: var(--branco);
+  }
+  
+  .resumo-card.pagas {
+    background: linear-gradient(135deg, var(--sucesso) 0%, #219a52 100%);
+    color: var(--branco);
+  }
+  
+  .resumo-card.pendentes {
+    background: linear-gradient(135deg, var(--aviso) 0%, #d35400 100%);
+    color: var(--branco);
+  }
+  
+  .resumo-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .resumo-valor {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  /* Card */
+  .card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    border: 1px solid var(--borda);
+    overflow: hidden;
+    margin-bottom: 32px;
+    box-shadow: var(--sombra-card);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--borda);
+  }
+  
+  .card-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--verde-escuro);
+  }
+  
+  .full-width {
+    grid-column: span 2;
+  }
+  
+  /* Tabela de Multas */
+  .multas-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .multas-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .multas-table th {
+    text-align: left;
+    padding: 14px 16px;
+    background: var(--creme);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--texto-medio);
+    border-bottom: 1px solid var(--borda);
+  }
+  
+  .multas-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--creme-dark);
+    font-size: 0.85rem;
+  }
+  
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .status-badge.pago {
+    background: #e0f2e9;
+    color: var(--sucesso);
+  }
+  
+  .status-badge.pendente {
+    background: #fee2e2;
+    color: var(--erro);
+  }
+  
+  .btn-pagar-multa {
+    background: var(--sucesso);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .btn-pagar-multa:hover {
+    background: #219a52;
+    transform: scale(1.02);
+  }
+  
+  /* Payment Card */
+  .payment-card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    border: 1px solid var(--borda);
+    padding: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: var(--sombra-card);
+  }
+  
+  .payment-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .payment-icon {
+    font-size: 2rem;
+  }
+  
+  .payment-info h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--verde-escuro);
+    margin-bottom: 4px;
+  }
+  
+  .payment-info p {
+    font-size: 0.75rem;
+    color: var(--texto-leve);
+  }
+  
+  .payment-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .payment-actions select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--borda);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    background: var(--branco);
+    min-width: 220px;
+  }
+  
+  .btn-pagar {
+    background: var(--sucesso);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  
+  .btn-pagar:hover {
+    background: #219a52;
+    transform: translateY(-1px);
+  }
+  
+  /* Info Card */
+  .info-card {
+    background: var(--creme-dark);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    border-left: 4px solid var(--dourado);
+  }
+  
+  .info-icon {
+    font-size: 1.8rem;
+  }
+  
+  .info-content h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--verde-escuro);
+    margin-bottom: 12px;
+  }
+  
+  .info-content p {
+    font-size: 0.8rem;
+    color: var(--texto-medio);
+    margin: 6px 0;
+    line-height: 1.4;
+  }
+  
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--texto-escuro);
+    color: var(--creme);
+    padding: 12px 20px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 1000;
+    font-size: 0.85rem;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+  
+  .toast.success {
+    background: var(--sucesso);
+  }
+  
+  .toast.error {
+    background: var(--erro);
+  }
+  
+  /* Responsivo */
+  @media (max-width: 1000px) {
+    .header-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .main-nav {
+      justify-content: center;
+    }
+    
+    .resumo-financeiro {
+      grid-template-columns: 1fr;
+    }
+    
+    .payment-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .payment-info {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .info-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .dashboard-main {
+      padding: 20px;
+    }
+    
+    .multas-table th,
+    .multas-table td {
+      padding: 10px 12px;
+      font-size: 0.75rem;
+    }
+    
+    .resumo-valor {
+      font-size: 1.5rem;
+    }
+    
+    .toast {
+      white-space: normal;
+      text-align: center;
+      max-width: 90%;
+    }
+    
+    .payment-actions select {
+      width: 100%;
+    }
+    
+    .btn-pagar {
+      width: 100%;
+    }
+  }
+  
+  
