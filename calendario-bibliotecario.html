@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Escolar — Calendário de Prazos (Bibliotecário)</title>
+  <link rel="stylesheet" href="style-calendario-bibliotecario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+
+  <header class="dashboard-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon-sm">
+          <svg viewBox="0 0 48 48" fill="none">
+            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/>
+          </svg>
+        </div>
+        <span class="logo-text-dark">Bibliotheca</span>
+        <span class="badge-bibliotecario">Bibliotecário</span>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-link" onclick="window.location.href='dashboard-bibliotecario.html'">📊 Visão Geral</button>
+        <button class="nav-link" onclick="window.location.href='dashboard-bibliotecario.html'">📚 Acervo</button>
+        <button class="nav-link" onclick="window.location.href='dashboard-bibliotecario.html'">🔄 Empréstimos</button>
+        <button class="nav-link" onclick="window.location.href='dashboard-bibliotecario.html'">✅ Devoluções</button>
+        <button class="nav-link active">📅 Calendário</button>
+        <button class="nav-link" onclick="window.location.href='multas-bibliotecario.html'">💰 Multas</button>
+        <button class="nav-link" onclick="window.location.href='dashboard-bibliotecario.html'">📈 Relatórios</button>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar"><span class="avatar-initials">MC</span></div>
+        <div class="user-info"><span class="user-name">Maria Costa</span><span class="user-role">Bibliotecária Chefe</span></div>
+        <button class="logout-btn" onclick="showToast('Sessão encerrada!')"><svg viewBox="0 0 20 20" fill="none"><path d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10" stroke="currentColor" stroke-width="1.5"/></svg><span>Sair</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="main-container">
+
+      <div class="calendar-header">
+        <h1>📅 Calendário Geral de Prazos</h1>
+        <p>Visão completa de todos os empréstimos ativos da biblioteca</p>
+      </div>
+
+      <!-- Cards estatísticos -->
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-content"><span class="stat-number" id="totalEmprestimos">0</span><span class="stat-label">Empréstimos ativos</span></div></div>
+        <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-content"><span class="stat-number" id="totalAtrasos">0</span><span class="stat-label">Em atraso</span></div></div>
+        <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-content"><span class="stat-number" id="totalSemana">0</span><span class="stat-label">Vencem esta semana</span></div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-content"><span class="stat-number" id="totalUsuarios">0</span><div class="stat-label">Usuários com empréstimo</div></div></div>
+      </div>
+
+      <!-- Próximos vencimentos (todos) -->
+      <div class="upcoming-events">
+        <div class="upcoming-header">
+          <h3>⏰ Próximos vencimentos</h3>
+          <div class="filter-buttons">
+            <button class="filter-chip active" data-filter="all">Todos</button>
+            <button class="filter-chip" data-filter="week">Esta semana</button>
+            <button class="filter-chip" data-filter="overdue">Atrasados</button>
+          </div>
+        </div>
+        <div class="events-timeline" id="upcomingEvents"></div>
+      </div>
+
+      <!-- Calendário mensal -->
+      <div class="calendar-wrapper">
+        <div class="calendar-nav">
+          <button class="calendar-nav-btn" onclick="changeMonth(-1)">◀ Mês anterior</button>
+          <h2 id="monthYearDisplay">Junho 2025</h2>
+          <button class="calendar-nav-btn" onclick="changeMonth(1)">Próximo mês ▶</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <!-- Lista completa de empréstimos ativos -->
+      <div class="card full-width">
+        <div class="card-header">
+          <h3>📋 Todos os Empréstimos Ativos</h3>
+          <div class="search-bar-small">
+            <input type="text" id="searchLoan" placeholder="Buscar por usuário ou livro..." />
+          </div>
+        </div>
+        <div class="loan-table-wrapper">
+          <table class="loan-table">
+            <thead>
+              <tr><th>Usuário</th><th>Livro</th><th>Data Retirada</th><th>Data Devolução</th><th>Dias restantes</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="allLoansTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Resumo por usuário -->
+      <div class="card full-width">
+        <div class="card-header">
+          <h3>👥 Resumo por Usuário</h3>
+          <button class="link-sm" onclick="exportarResumo()">Exportar relatório</button>
+        </div>
+        <div class="user-summary-grid" id="userSummaryGrid"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5"/></svg><span id="toast-msg"></span></div>
+
+  <script>
+    // Dados dos empréstimos de todos os usuários
+    let todosEmprestimos = [
+      { id: 1, usuario: "Ana Martins", matricula: "20241023", livro: "O Nome do Vento", dataRetirada: "2025-06-05", dataDevolucao: "2025-06-20", status: "active" },
+      { id: 2, usuario: "Carlos Silva", matricula: "20241045", livro: "Dom Quixote", dataRetirada: "2025-06-08", dataDevolucao: "2025-06-25", status: "active" },
+      { id: 3, usuario: "Fernanda Lima", matricula: "20240812", livro: "Duna", dataRetirada: "2025-06-01", dataDevolucao: "2025-06-15", status: "overdue" },
+      { id: 4, usuario: "Roberto Almeida", matricula: "PROF001", livro: "1984", dataRetirada: "2025-06-10", dataDevolucao: "2025-07-10", status: "active" },
+      { id: 5, usuario: "Beatriz Nunes", matricula: "20241103", livro: "O Pequeno Príncipe", dataRetirada: "2025-06-12", dataDevolucao: "2025-06-27", status: "active" },
+      { id: 6, usuario: "Lucas Andrade", matricula: "20240987", livro: "Neuromancer", dataRetirada: "2025-06-03", dataDevolucao: "2025-06-18", status: "overdue" },
+      { id: 7, usuario: "Sofia Menezes", matricula: "20241234", livro: "Fahrenheit 451", dataRetirada: "2025-06-14", dataDevolucao: "2025-06-29", status: "active" }
+    ];
+
+    let currentDate = new Date(2025, 5, 15);
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    let currentFilter = "all";
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.className = 'toast show';
+      setTimeout(() => toast.className = 'toast', 3000);
+    }
+
+    function formatDate(dateStr) {
+      return new Date(dateStr).toLocaleDateString('pt-BR');
+    }
+
+    function getDaysDifference(dateStr) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const targetDate = new Date(dateStr);
+      const diffTime = targetDate - today;
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+
+    function isThisWeek(dateStr) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay());
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      return date >= startOfWeek && date <= endOfWeek;
+    }
+
+    function atualizarStats() {
+      const ativos = todosEmprestimos.filter(e => e.status === 'active' || e.status === 'overdue');
+      const atrasados = todosEmprestimos.filter(e => e.status === 'overdue');
+      const vencemSemana = todosEmprestimos.filter(e => {
+        if (e.status === 'returned') return false;
+        const dias = getDaysDifference(e.dataDevolucao);
+        return dias >= 0 && dias <= 7;
+      });
+      const usuariosUnicos = [...new Set(ativos.map(e => e.usuario))];
+      
+      document.getElementById('totalEmprestimos').textContent = ativos.length;
+      document.getElementById('totalAtrasos').textContent = atrasados.length;
+      document.getElementById('totalSemana').textContent = vencemSemana.length;
+      document.getElementById('totalUsuarios').textContent = usuariosUnicos.length;
+    }
+
+    function renderUpcomingEvents() {
+      let filtered = [...todosEmprestimos];
+      if (currentFilter === 'week') {
+        filtered = filtered.filter(e => e.status !== 'returned' && isThisWeek(e.dataDevolucao));
+      } else if (currentFilter === 'overdue') {
+        filtered = filtered.filter(e => e.status === 'overdue');
+      } else {
+        filtered = filtered.filter(e => e.status !== 'returned');
+      }
+      
+      const sorted = filtered.sort((a, b) => new Date(a.dataDevolucao) - new Date(b.dataDevolucao));
+      const container = document.getElementById('upcomingEvents');
+      
+      container.innerHTML = sorted.map(e => {
+        const diasRestantes = getDaysDifference(e.dataDevolucao);
+        const isOverdue = diasRestantes < 0;
+        let statusClass = 'ok';
+        let statusText = `${Math.abs(diasRestantes)} dias restantes`;
+        if (isOverdue) {
+          statusClass = 'danger';
+          statusText = `Atrasado há ${Math.abs(diasRestantes)} dias`;
+        } else if (diasRestantes <= 3) {
+          statusClass = 'warning';
+        }
+        
+        return `
+          <div class="event-item ${isOverdue ? 'overdue' : ''}">
+            <div class="event-date">${formatDate(e.dataDevolucao)}</div>
+            <div class="event-info">
+              <strong>${e.livro}</strong>
+              <span>${e.usuario} (${e.matricula})</span>
+            </div>
+            <div class="event-days ${statusClass}">${statusText}</div>
+            <button class="btn-notify" onclick="showToast('Notificação enviada para ${e.usuario}')">📧 Notificar</button>
+          </div>
+        `;
+      }).join('');
+      
+      if (sorted.length === 0) {
+        container.innerHTML = '<div class="no-events">Nenhum empréstimo ativo no momento</div>';
+      }
+    }
+
+    function renderCalendar() {
+      const firstDay = new Date(currentYear, currentMonth, 1);
+      const lastDay = new Date(currentYear, currentMonth + 1, 0);
+      const startDayOfWeek = firstDay.getDay();
+      const daysInMonth = lastDay.getDate();
+      
+      const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      document.getElementById('monthYearDisplay').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+      
+      let calendarHTML = '<div class="calendar-weekdays"><div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div></div><div class="calendar-days">';
+      
+      for (let i = 0; i < startDayOfWeek; i++) {
+        calendarHTML += '<div class="calendar-day empty"></div>';
+      }
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const emprestimosDia = todosEmprestimos.filter(e => e.dataDevolucao === dateStr);
+        const temDevolucao = emprestimosDia.length > 0;
+        const temAtraso = emprestimosDia.some(e => e.status === 'overdue');
+        const isToday = dateStr === new Date().toISOString().split('T')[0];
+        
+        let eventClass = '';
+        let tooltipText = '';
+        if (temDevolucao) {
+          eventClass = temAtraso ? 'devolucao-overdue' : 'devolucao';
+          tooltipText = emprestimosDia.map(e => `${e.usuario}: ${e.livro}`).join('\n');
+        }
+        
+        calendarHTML += `<div class="calendar-day ${eventClass} ${isToday ? 'today' : ''}" title="${tooltipText}" onclick="showToast('${tooltipText || 'Sem devoluções'}')">
+          <span class="day-number">${day}</span>
+          ${temDevolucao ? `<span class="event-count">${emprestimosDia.length}</span>` : ''}
+        </div>`;
+      }
+      
+      calendarHTML += '</div>';
+      document.getElementById('calendarGrid').innerHTML = calendarHTML;
+    }
+
+    function renderAllLoans() {
+      const search = document.getElementById('searchLoan')?.value.toLowerCase() || '';
+      const filtered = todosEmprestimos.filter(e => 
+        e.usuario.toLowerCase().includes(search) || 
+        e.livro.toLowerCase().includes(search) ||
+        e.matricula.includes(search)
+      );
+      
+      const tbody = document.getElementById('allLoansTable');
+      tbody.innerHTML = filtered.map(e => {
+        const diasRestantes = getDaysDifference(e.dataDevolucao);
+        const isOverdue = diasRestantes < 0;
+        let statusClass = 'active';
+        let statusText = 'Em dia';
+        if (isOverdue) {
+          statusClass = 'overdue';
+          statusText = 'Atrasado';
+        } else if (diasRestantes <= 3) {
+          statusClass = 'warning';
+          statusText = 'Próximo';
+        }
+        
+        return `
+          <tr>
+            <td><strong>${e.usuario}</strong><br><span class="matricula">${e.matricula}</span></td>
+            <td>${e.livro}</td>
+            <td>${formatDate(e.dataRetirada)}</td>
+            <td>${formatDate(e.dataDevolucao)}</td>
+            <td class="${isOverdue ? 'text-danger' : diasRestantes <= 3 ? 'text-warning' : 'text-success'}">${isOverdue ? `${Math.abs(diasRestantes)} dias atrás` : `${diasRestantes} dias`}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td><button class="btn-icon" onclick="showToast('Notificar ${e.usuario}')">📧</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderUserSummary() {
+      const usuariosMap = new Map();
+      todosEmprestimos.forEach(e => {
+        if (!usuariosMap.has(e.usuario)) {
+          usuariosMap.set(e.usuario, { nome: e.usuario, matricula: e.matricula, total: 0, atrasados: 0 });
+        }
+        const user = usuariosMap.get(e.usuario);
+        user.total++;
+        if (e.status === 'overdue') user.atrasados++;
+      });
+      
+      const container = document.getElementById('userSummaryGrid');
+      container.innerHTML = Array.from(usuariosMap.values()).map(u => `
+        <div class="user-summary-card">
+          <div class="user-summary-avatar">${u.nome.charAt(0)}</div>
+          <div class="user-summary-info">
+            <strong>${u.nome}</strong>
+            <span>${u.matricula}</span>
+          </div>
+          <div class="user-summary-stats">
+            <span>📚 ${u.total} livros</span>
+            ${u.atrasados > 0 ? `<span class="atrasos">⚠️ ${u.atrasados} atrasos</span>` : '<span class="ok">✅ Em dia</span>'}
+          </div>
+          <button class="btn-small" onclick="showToast('Ver detalhes de ${u.nome}')">Ver</button>
+        </div>
+      `).join('');
+    }
+
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      renderCalendar();
+    }
+
+    function exportarResumo() {
+      let csv = "Usuário,Matrícula,Total de Livros,Atrasos\n";
+      const usuariosMap = new Map();
+      todosEmprestimos.forEach(e => {
+        if (!usuariosMap.has(e.usuario)) {
+          usuariosMap.set(e.usuario, { nome: e.usuario, matricula: e.matricula, total: 0, atrasados: 0 });
+        }
+        const user = usuariosMap.get(e.usuario);
+        user.total++;
+        if (e.status === 'overdue') user.atrasados++;
+      });
+      Array.from(usuariosMap.values()).forEach(u => {
+        csv += `${u.nome},${u.matricula},${u.total},${u.atrasados}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'resumo_emprestimos.csv';
+      link.click();
+      showToast('Relatório exportado com sucesso!');
+    }
+
+    // Event listeners
+    document.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.getAttribute('data-filter');
+        renderUpcomingEvents();
+      });
+    });
+
+    document.getElementById('searchLoan')?.addEventListener('input', () => renderAllLoans());
+
+    // Inicialização
+    function init() {
+      atualizarStats();
+      renderUpcomingEvents();
+      renderCalendar();
+      renderAllLoans();
+      renderUserSummary();
+    }
+    
+    init();
+
+    window.showToast = showToast;
+    window.changeMonth = changeMonth;
+    window.exportarResumo = exportarResumo;
+  </script>
+</body>
+</html>
+
