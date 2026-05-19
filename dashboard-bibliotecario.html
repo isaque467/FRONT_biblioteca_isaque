@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Biblioteca Escolar — Painel do Bibliotecário</title>
+  <link rel="stylesheet" href="style-bibliotecario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Header principal -->
+  <header class="dashboard-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon-sm">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/>
+            <rect x="8" y="27" width="32" height="4" rx="2" fill="currentColor" opacity="0.4"/>
+            <rect x="10" y="34" width="28" height="3" rx="1.5" fill="currentColor" opacity="0.25"/>
+          </svg>
+        </div>
+        <span class="logo-text-dark">Bibliotheca</span>
+        <span class="badge-bibliotecario">Bibliotecário</span>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-link active" data-section="dashboard">📊 Visão Geral</button>
+        <button class="nav-link" data-section="acervo">📚 Acervo</button>
+        <button class="nav-link" data-section="emprestimos">🔄 Empréstimos</button>
+        <button class="nav-link" data-section="devolucoes">✅ Devoluções</button>
+        <button class="nav-link" data-section="usuarios">👥 Usuários</button>
+        <button class="nav-link" data-section="relatorios">📈 Relatórios</button>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">
+          <span class="avatar-initials">MC</span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Maria Costa</span>
+          <span class="user-role">Bibliotecária Chefe</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="dashboard-main">
+    <div class="main-container">
+
+      <!-- ===== DASHBOARD / VISÃO GERAL ===== -->
+      <section class="dashboard-section active" id="section-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-content">
+              <span class="stat-number" id="totalLivros">0</span>
+              <span class="stat-label">Livros no acervo</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+              <span class="stat-number" id="totalUsuarios">0</span>
+              <span class="stat-label">Usuários ativos</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🔄</div>
+            <div class="stat-content">
+              <span class="stat-number" id="totalEmprestimos">0</span>
+              <span class="stat-label">Empréstimos ativos</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏰</div>
+            <div class="stat-content">
+              <span class="stat-number" id="totalAtrasos">0</span>
+              <span class="stat-label">Atrasos hoje</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <h3>Ações rápidas</h3>
+          <div class="action-buttons">
+            <button class="action-btn" onclick="navigateTo('acervo')">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.167v11.666M4.167 10h11.666" stroke="currentColor" stroke-width="1.5"/></svg>
+              Adicionar Livro
+            </button>
+            <button class="action-btn" onclick="navigateTo('emprestimos')">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3.333 5.833A.833.833 0 014.167 5h11.666a.833.833 0 01.834.833v1.667a.833.833 0 01-.834.833H4.167a.833.833 0 01-.834-.833V5.833zM3.333 11.667a.833.833 0 01.834-.834h11.666a.833.833 0 01.834.834v1.666a.833.833 0 01-.834.834H4.167a.833.833 0 01-.834-.834v-1.666z" stroke="currentColor" stroke-width="1.5"/></svg>
+              Novo Empréstimo
+            </button>
+            <button class="action-btn" onclick="navigateTo('devolucoes')">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.167 10.833L7.5 14.167l8.333-8.334" stroke="currentColor" stroke-width="1.5"/></svg>
+              Registrar Devolução
+            </button>
+            <button class="action-btn" onclick="navigateTo('usuarios')">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4.167v11.666M4.167 10h11.666" stroke="currentColor" stroke-width="1.5"/></svg>
+              Novo Usuário
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <div class="card">
+            <div class="card-header">
+              <h3>⚠️ Próximos vencimentos</h3>
+              <span class="badge-count" id="vencimentosCount">0</span>
+            </div>
+            <div class="pending-list" id="pendingList"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>📊 Atividade recente</h3>
+              <span class="badge-count">Hoje</span>
+            </div>
+            <div class="activity-list" id="activityList"></div>
+          </div>
+        </div>
+
+        <div class="card full-width">
+          <div class="card-header">
+            <h3>📌 Reservas aguardando retirada</h3>
+            <button class="link-sm" onclick="showToast('Lista de reservas atualizada')">Ver todas</button>
+          </div>
+          <div class="reservas-pendentes" id="reservasList"></div>
+        </div>
+      </section>
+
+      <!-- ===== ACERVO ===== -->
+      <section class="dashboard-section" id="section-acervo">
+        <div class="section-header">
+          <h2>📚 Gerenciar Acervo</h2>
+          <button class="btn-primary-small" onclick="abrirFormLivro()">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 4.167v11.666M4.167 10h11.666" stroke="currentColor" stroke-width="1.5"/></svg>
+            Adicionar Livro
+          </button>
+        </div>
+
+        <div id="formLivro" class="form-card hidden">
+          <div class="form-card-header">
+            <h3>📖 Adicionar novo livro</h3>
+            <button class="close-form" onclick="fecharFormLivro()">&times;</button>
+          </div>
+          <form onsubmit="cadastrarLivro(event)">
+            <div class="field-row">
+              <div class="field-group"><label>Título *</label><input type="text" id="livroTitulo" required /></div>
+              <div class="field-group"><label>Autor *</label><input type="text" id="livroAutor" required /></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Ano</label><input type="number" id="livroAno" /></div>
+              <div class="field-group"><label>Gênero</label><input type="text" id="livroGenero" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>ISBN</label><input type="text" id="livroIsbn" /></div>
+              <div class="field-group"><label>Exemplares</label><input type="number" id="livroExemplares" value="1" min="1" /></div>
+            </div>
+            <div class="form-actions"><button type="button" class="btn-secondary" onclick="fecharFormLivro()">Cancelar</button><button type="submit" class="btn-primary">Salvar</button></div>
+          </form>
+        </div>
+
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none"><path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625" stroke="currentColor" stroke-width="1.5"/></svg>
+          <input type="text" id="searchAcervo" placeholder="Pesquisar livro por título ou autor..." />
+        </div>
+
+        <div class="book-table-wrapper">
+          <table class="book-table">
+            <thead><tr><th>Título</th><th>Autor</th><th>Ano</th><th>Gênero</th><th>Exemplares</th><th>Disponíveis</th><th>Ações</th></tr></thead>
+            <tbody id="bookTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== EMPRÉSTIMOS ===== -->
+      <section class="dashboard-section" id="section-emprestimos">
+        <div class="section-header">
+          <h2>🔄 Gerenciar Empréstimos</h2>
+          <button class="btn-primary-small" onclick="abrirFormEmprestimo()">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 4.167v11.666M4.167 10h11.666" stroke="currentColor" stroke-width="1.5"/></svg>
+            Novo Empréstimo
+          </button>
+        </div>
+
+        <div id="formEmprestimo" class="form-card hidden">
+          <div class="form-card-header"><h3>🔄 Registrar novo empréstimo</h3><button class="close-form" onclick="fecharFormEmprestimo()">&times;</button></div>
+          <form onsubmit="registrarEmprestimo(event)">
+            <div class="field-row">
+              <div class="field-group"><label>Usuário (matrícula ou e-mail) *</label><input type="text" id="emprestimoUsuario" required list="usuariosList" /><datalist id="usuariosList"></datalist></div>
+              <div class="field-group"><label>Livro *</label><select id="emprestimoLivro" required><option value="">Selecione</option></select></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Data empréstimo *</label><input type="date" id="emprestimoDataInicio" required /></div>
+              <div class="field-group"><label>Data prevista *</label><input type="date" id="emprestimoDataFim" required /></div>
+            </div>
+            <div class="form-actions"><button type="button" class="btn-secondary" onclick="fecharFormEmprestimo()">Cancelar</button><button type="submit" class="btn-primary">Registrar</button></div>
+          </form>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="active">Ativos</button>
+          <button class="filter-btn" data-filter="overdue">Atrasados</button>
+          <button class="filter-btn" data-filter="returned">Devolvidos</button>
+        </div>
+
+        <div class="loan-table-wrapper">
+          <table class="loan-table">
+            <thead><tr><th>Usuário</th><th>Livro</th><th>Data Empréstimo</th><th>Data Devolução</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="loanTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== DEVOLUÇÕES ===== -->
+      <section class="dashboard-section" id="section-devolucoes">
+        <div class="section-header">
+          <h2>✅ Registrar Devoluções</h2>
+          <button class="btn-primary-small" onclick="abrirFormDevolucao()">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4.167 10.833L7.5 14.167l8.333-8.334" stroke="currentColor" stroke-width="1.5"/></svg>
+            Nova Devolução
+          </button>
+        </div>
+
+        <div id="formDevolucao" class="form-card hidden">
+          <div class="form-card-header"><h3>✅ Registrar devolução</h3><button class="close-form" onclick="fecharFormDevolucao()">&times;</button></div>
+          <form onsubmit="registrarDevolucao(event)">
+            <div class="field-row">
+              <div class="field-group"><label>Empréstimo (usuário ou livro) *</label><input type="text" id="devolucaoBusca" required placeholder="Digite nome do usuário ou título" list="emprestimosAtivosList" /><datalist id="emprestimosAtivosList"></datalist></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Data devolução *</label><input type="date" id="devolucaoData" required /></div>
+              <div class="field-group"><label>Multa</label><input type="text" id="devolucaoMulta" placeholder="R$ 0,00" /></div>
+            </div>
+            <div class="form-actions"><button type="button" class="btn-secondary" onclick="fecharFormDevolucao()">Cancelar</button><button type="submit" class="btn-primary">Confirmar</button></div>
+          </form>
+        </div>
+
+        <div class="section-subtitle"><h3>📋 Empréstimos ativos</h3><p>Clique em "Devolver" para registrar rapidamente</p></div>
+        <div class="active-loans-grid" id="activeLoansGrid"></div>
+
+        <div class="section-subtitle"><h3>📜 Últimas devoluções</h3></div>
+        <div class="recent-returns" id="recentReturns"></div>
+      </section>
+
+      <!-- ===== USUÁRIOS ===== -->
+      <section class="dashboard-section" id="section-usuarios">
+        <div class="section-header">
+          <h2>👥 Gerenciar Usuários</h2>
+          <button class="btn-primary-small" onclick="abrirFormUsuario()">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 4.167v11.666M4.167 10h11.666" stroke="currentColor" stroke-width="1.5"/></svg>
+            Novo Usuário
+          </button>
+        </div>
+
+        <div id="formUsuario" class="form-card hidden">
+          <div class="form-card-header"><h3>👤 Cadastrar novo usuário</h3><button class="close-form" onclick="fecharFormUsuario()">&times;</button></div>
+          <form onsubmit="cadastrarUsuario(event)">
+            <div class="field-row">
+              <div class="field-group"><label>Nome *</label><input type="text" id="userNome" required /></div>
+              <div class="field-group"><label>Sobrenome *</label><input type="text" id="userSobrenome" required /></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>E-mail *</label><input type="email" id="userEmail" required /></div>
+              <div class="field-group"><label>Matrícula/CPF *</label><input type="text" id="userMatricula" required /></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Tipo *</label><select id="userTipo"><option value="aluno">Aluno</option><option value="professor">Professor</option><option value="visitante">Visitante</option><option value="bibliotecario">Bibliotecário</option></select></div>
+              <div class="field-group"><label>Telefone</label><input type="text" id="userTelefone" /></div>
+            </div>
+            <div class="form-actions"><button type="button" class="btn-secondary" onclick="fecharFormUsuario()">Cancelar</button><button type="submit" class="btn-primary">Cadastrar</button></div>
+          </form>
+        </div>
+
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none"><path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625" stroke="currentColor" stroke-width="1.5"/></svg>
+          <input type="text" id="searchUsuario" placeholder="Buscar por nome, matrícula ou e-mail..." />
+        </div>
+
+        <div class="users-grid" id="usersGrid"></div>
+      </section>
+
+      <!-- ===== RELATÓRIOS ===== -->
+      <section class="dashboard-section" id="section-relatorios">
+        <div class="section-header">
+          <h2>📈 Relatórios e Estatísticas</h2>
+          <p>Análise completa da biblioteca</p>
+        </div>
+
+        <div class="reports-grid">
+          <div class="report-card" onclick="gerarRelatorio('emprestimos')">
+            <div class="report-icon">📊</div><h4>Empréstimos mensais</h4>
+            <span id="relEmprestimosMensal">Carregando...</span>
+          </div>
+          <div class="report-card" onclick="gerarRelatorio('devolucoes')">
+            <div class="report-icon">🔄</div><h4>Taxa de devolução</h4>
+            <span id="relTaxaDevolucao">Carregando...</span>
+          </div>
+          <div class="report-card" onclick="gerarRelatorio('populares')">
+            <div class="report-icon">⭐</div><h4>Livros mais emprestados</h4>
+            <span id="relLivrosPopulares">Carregando...</span>
+          </div>
+          <div class="report-card" onclick="gerarRelatorio('usuarios')">
+            <div class="report-icon">👥</div><h4>Usuários por tipo</h4>
+            <span id="relUsuariosPorTipo">Carregando...</span>
+          </div>
+        </div>
+
+        <div class="chart-placeholder">
+          <div class="chart-header"><h3>Movimentação mensal - 2025</h3><span>Empréstimos realizados por mês</span></div>
+          <div class="simple-bars" id="chartBars"></div>
+        </div>
+
+        <div class="export-buttons">
+          <button class="btn-outline" onclick="exportarRelatorio('PDF')">📄 Exportar PDF</button>
+          <button class="btn-outline" onclick="exportarRelatorio('CSV')">📊 Exportar CSV</button>
+          <button class="btn-outline" onclick="exportarRelatorio('Excel')">📑 Exportar Excel</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5"/></svg><span id="toast-msg"></span></div>
+
+  <script src="script-bibliotecario.js"></script>
+</body>
+</html>

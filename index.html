@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Escolar — Acesso</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+ 
+  <!-- Decorative background elements -->
+  <div class="bg-pattern"></div>
+  <div class="bg-glow"></div>
+ 
+  <!-- Sidebar Branding -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/>
+            <rect x="8" y="27" width="32" height="4" rx="2" fill="currentColor" opacity="0.4"/>
+            <rect x="10" y="34" width="28" height="3" rx="1.5" fill="currentColor" opacity="0.25"/>
+            <rect x="14" y="40" width="20" height="2" rx="1" fill="currentColor" opacity="0.15"/>
+          </svg>
+        </div>
+        <span class="logo-text">Bibliotheca</span>
+      </div>
+ 
+      <div class="sidebar-content">
+        <h1 class="sidebar-title">
+          Conhecimento<br/>
+          <em>ao alcance</em><br/>
+          de todos.
+        </h1>
+        <p class="sidebar-desc">
+          Sistema integrado de gestão da Biblioteca Escolar. Acesse seu acervo, faça reservas e acompanhe seus empréstimos.
+        </p>
+      </div>
+ 
+      <div class="sidebar-stats">
+        <div class="stat">
+          <span class="stat-number">12.400</span>
+          <span class="stat-label">Títulos</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">3.200</span>
+          <span class="stat-label">Usuários</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">98%</span>
+          <span class="stat-label">Satisfação</span>
+        </div>
+      </div>
+ 
+      <div class="book-stack">
+        <div class="book book-1"></div>
+        <div class="book book-2"></div>
+        <div class="book book-3"></div>
+        <div class="book book-4"></div>
+        <div class="book book-5"></div>
+      </div>
+    </div>
+  </aside>
+ 
+  <!-- Main Panel -->
+  <main class="main">
+ 
+    <!-- Tab switcher between Login and Cadastro -->
+    <div class="panel">
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">Entrar</button>
+        <button class="tab-btn" data-tab="cadastro" onclick="switchTab('cadastro')">Criar Conta</button>
+        <div class="tab-indicator"></div>
+      </nav>
+ 
+      <!-- ===== LOGIN FORM ===== -->
+      <section class="tab-panel active" id="tab-login">
+        <div class="form-header">
+          <h2>Bem-vindo de volta</h2>
+          <p>Acesse sua conta para continuar</p>
+        </div>
+ 
+        <!-- Role selector -->
+        <div class="role-selector">
+          <p class="role-label">Entrar como</p>
+          <div class="role-cards">
+            <label class="role-card active" for="role-aluno">
+              <input type="radio" name="role" id="role-aluno" value="aluno" checked />
+              <div class="role-card-inner">
+                <div class="role-icon">
+                  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="10" r="5" stroke="currentColor" stroke-width="2"/>
+                    <path d="M6 26c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="role-name">Aluno</span>
+                <span class="role-desc">Leitor / Visitante</span>
+              </div>
+            </label>
+ 
+            <label class="role-card" for="role-bibliotecario">
+              <input type="radio" name="role" id="role-bibliotecario" value="bibliotecario" />
+              <div class="role-card-inner">
+                <div class="role-icon">
+                  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="7" width="9" height="12" rx="1.5" stroke="currentColor" stroke-width="2"/>
+                    <rect x="16" y="7" width="9" height="12" rx="1.5" stroke="currentColor" stroke-width="2"/>
+                    <path d="M5 22h22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M8 25h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="role-name">Bibliotecário</span>
+                <span class="role-desc">Gestor do acervo</span>
+              </div>
+            </label>
+          </div>
+        </div>
+ 
+        <form class="auth-form" onsubmit="handleLogin(event)">
+          <div class="field-group">
+            <label for="login-email">E-mail ou matrícula</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+                <path d="M2.5 6.667L10 11.25l7.5-4.583M3.333 15h13.334A.833.833 0 0017.5 14.167V5.833A.833.833 0 0016.667 5H3.333A.833.833 0 002.5 5.833v8.334A.833.833 0 003.333 15z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <input type="text" id="login-email" placeholder="ex: joao@escola.edu.br" autocomplete="email" />
+            </div>
+          </div>
+ 
+          <div class="field-group">
+            <label for="login-senha">Senha</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+                <rect x="3.5" y="9" width="13" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M6.667 9V6.667a3.333 3.333 0 016.666 0V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="10" cy="13.75" r="1.25" fill="currentColor"/>
+              </svg>
+              <input type="password" id="login-senha" placeholder="••••••••" autocomplete="current-password" />
+              <button type="button" class="toggle-pass" onclick="togglePassword('login-senha', this)" aria-label="Mostrar senha">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M2.5 10S5 4.167 10 4.167 17.5 10 17.5 10 15 15.833 10 15.833 2.5 10 2.5 10z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </div>
+          </div>
+ 
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" />
+              <span class="checkmark"></span>
+              Lembrar de mim
+            </label>
+            <a href="#" class="link-forgot">Esqueci a senha</a>
+          </div>
+ 
+          <button type="submit" class="btn-primary">
+            <span>Acessar sistema</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4.167 10h11.666M10.833 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+ 
+        <p class="form-footer">
+          Novo por aqui? <button class="link-switch" onclick="switchTab('cadastro')">Crie sua conta</button>
+        </p>
+      </section>
+ 
+      <!-- ===== CADASTRO FORM ===== -->
+      <section class="tab-panel" id="tab-cadastro">
+        <div class="form-header">
+          <h2>Criar nova conta</h2>
+          <p>Preencha seus dados para se cadastrar</p>
+        </div>
+ 
+        <form class="auth-form" onsubmit="handleCadastro(event)">
+ 
+          <div class="field-group">
+            <label for="cad-tipo">Tipo de conta</label>
+            <div class="select-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" fill="none"><path d="M3.333 5.833A.833.833 0 014.167 5h11.666a.833.833 0 01.834.833v1.667a.833.833 0 01-.834.833H4.167a.833.833 0 01-.834-.833V5.833zM3.333 11.667a.833.833 0 01.834-.834h11.666a.833.833 0 01.834.834v1.666a.833.833 0 01-.834.834H4.167a.833.833 0 01-.834-.834v-1.666z" stroke="currentColor" stroke-width="1.5"/></svg>
+              <select id="cad-tipo">
+                <option value="">Selecione o perfil</option>
+                <option value="aluno">Aluno</option>
+                <option value="visitante">Visitante / Responsável</option>
+                <option value="bibliotecario">Bibliotecário</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+ 
+          <div class="field-row">
+            <div class="field-group">
+              <label for="cad-nome">Nome</label>
+              <div class="input-wrap">
+                <input type="text" id="cad-nome" placeholder="Primeiro nome" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="cad-sobrenome">Sobrenome</label>
+              <div class="input-wrap">
+                <input type="text" id="cad-sobrenome" placeholder="Sobrenome" />
+              </div>
+            </div>
+          </div>
+ 
+          <div class="field-group">
+            <label for="cad-matricula">Matrícula / CPF</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="3.5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h6M7 7h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input type="text" id="cad-matricula" placeholder="Número de matrícula ou CPF" />
+            </div>
+          </div>
+ 
+          <div class="field-group">
+            <label for="cad-email">E-mail</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" fill="none"><path d="M2.5 6.667L10 11.25l7.5-4.583M3.333 15h13.334A.833.833 0 0017.5 14.167V5.833A.833.833 0 0016.667 5H3.333A.833.833 0 002.5 5.833v8.334A.833.833 0 003.333 15z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input type="email" id="cad-email" placeholder="seu@email.com" />
+            </div>
+          </div>
+ 
+          <div class="field-row">
+            <div class="field-group">
+              <label for="cad-senha">Senha</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="9" width="13" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M6.667 9V6.667a3.333 3.333 0 016.666 0V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.75" r="1.25" fill="currentColor"/></svg>
+                <input type="password" id="cad-senha" placeholder="Mín. 8 caracteres" onkeyup="checkStrength(this.value)" />
+                <button type="button" class="toggle-pass" onclick="togglePassword('cad-senha', this)" aria-label="Mostrar senha">
+                  <svg viewBox="0 0 20 20" fill="none"><path d="M2.5 10S5 4.167 10 4.167 17.5 10 17.5 10 15 15.833 10 15.833 2.5 10 2.5 10z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                </button>
+              </div>
+              <div class="strength-bar">
+                <div class="strength-fill" id="strength-fill"></div>
+              </div>
+              <span class="strength-label" id="strength-label"></span>
+            </div>
+            <div class="field-group">
+              <label for="cad-confirma">Confirmar senha</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 20 20" fill="none"><path d="M4.167 10.833L7.5 14.167l8.333-8.334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <input type="password" id="cad-confirma" placeholder="Repita a senha" />
+              </div>
+            </div>
+          </div>
+ 
+          <label class="checkbox-label terms">
+            <input type="checkbox" id="cad-termos" />
+            <span class="checkmark"></span>
+            Li e aceito os <a href="#">termos de uso</a> da biblioteca
+          </label>
+ 
+          <button type="submit" class="btn-primary">
+            <span>Criar minha conta</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4.167 10h11.666M10.833 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+ 
+        <p class="form-footer">
+          Já tem conta? <button class="link-switch" onclick="switchTab('login')">Fazer login</button>
+        </p>
+      </section>
+ 
+    </div><!-- end .panel -->
+  </main>
+ 
+  <!-- Toast notification -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span id="toast-msg">Mensagem</span>
+  </div>
+ 
+  <script>
+    // Tab switching
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      updateIndicator(tab);
+    }
+ 
+    function updateIndicator(tab) {
+      const btn = document.querySelector(`[data-tab="${tab}"]`);
+      const indicator = document.querySelector('.tab-indicator');
+      indicator.style.left = btn.offsetLeft + 'px';
+      indicator.style.width = btn.offsetWidth + 'px';
+    }
+ 
+    // Role card selection
+    document.querySelectorAll('.role-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+ 
+    // Toggle password visibility
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.classList.toggle('active');
+    }
+ 
+    // Password strength
+    function checkStrength(val) {
+      const fill = document.getElementById('strength-fill');
+      const label = document.getElementById('strength-label');
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+      const levels = ['', 'Fraca', 'Razoável', 'Boa', 'Forte'];
+      const colors = ['', '#e05252', '#e08a52', '#7db85a', '#2ebd7c'];
+      fill.style.width = (score * 25) + '%';
+      fill.style.background = colors[score];
+      label.textContent = levels[score] || '';
+      label.style.color = colors[score];
+    }
+ 
+    // Show toast
+    function showToast(msg, type = 'info') {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.className = 'toast show ' + type;
+      setTimeout(() => t.className = 'toast', 3000);
+    }
+ 
+    // Form handlers
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const senha = document.getElementById('login-senha').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+      if (!email || !senha) { showToast('Preencha todos os campos.', 'error'); return; }
+      showToast(`Entrando como ${role === 'bibliotecario' ? 'Bibliotecário' : 'Aluno'}...`, 'success');
+    }
+ 
+    function handleCadastro(e) {
+      e.preventDefault();
+      const tipo = document.getElementById('cad-tipo').value;
+      const nome = document.getElementById('cad-nome').value;
+      const email = document.getElementById('cad-email').value;
+      const senha = document.getElementById('cad-senha').value;
+      const confirma = document.getElementById('cad-confirma').value;
+      const termos = document.getElementById('cad-termos').checked;
+      if (!tipo || !nome || !email || !senha) { showToast('Preencha todos os campos obrigatórios.', 'error'); return; }
+      if (senha !== confirma) { showToast('As senhas não coincidem.', 'error'); return; }
+      if (!termos) { showToast('Aceite os termos de uso para continuar.', 'error'); return; }
+      showToast('Conta criada com sucesso! Verifique seu e-mail.', 'success');
+    }
+ 
+    // Init indicator
+    window.addEventListener('load', () => updateIndicator('login'));
+  </script>
+</body>
+</html>
+
