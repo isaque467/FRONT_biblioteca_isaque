@@ -131,11 +131,15 @@
     let currentYear = currentDate.getFullYear();
     let currentFilter = "all";
 
-    function showToast(msg) {
+    let toastTimeout;
+    function showToast(msg, type = 'success') {
       const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
-      toast.className = 'toast show';
-      setTimeout(() => toast.className = 'toast', 3000);
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.className = `toast show ${type}`;
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.className = 'toast', 3000);
     }
 
     function formatDate(dateStr) {

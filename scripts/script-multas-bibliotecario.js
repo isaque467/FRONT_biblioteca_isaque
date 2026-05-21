@@ -151,8 +151,8 @@ const usuarios = [
   function adicionarMulta(event) {
     event.preventDefault();
     
-    const usuarioId = parseInt(document.getElementById('multaUsuario').value);
-    const livroId = parseInt(document.getElementById('multaLivro').value);
+    const usuarioId = parseInt(document.getElementById('multaUsuario').value, 10);
+    const livroId = parseInt(document.getElementById('multaLivro').value, 10);
     const tipo = document.getElementById('multaTipo').value;
     const valor = parseFloat(document.getElementById('multaValor').value);
     const data = document.getElementById('multaData').value;
@@ -161,8 +161,8 @@ const usuarios = [
     const usuario = usuarios.find(u => u.id === usuarioId);
     const livro = livros.find(l => l.id === livroId);
     
-    if (!usuario || !livro) {
-      showToast('Selecione um usuário e um livro válidos', 'error');
+    if (!usuario || !livro || !tipo || Number.isNaN(valor) || valor <= 0 || !data) {
+      showToast('Preencha todos os campos obrigatórios corretamente.', 'error');
       return;
     }
     
@@ -259,10 +259,10 @@ const usuarios = [
   }
   
   function calcularMulta() {
-    const dias = parseInt(document.getElementById('calcDias').value) || 0;
+    const dias = parseInt(document.getElementById('calcDias').value, 10) || 0;
     const valorDia = parseFloat(document.getElementById('calcValorDia').value) || 0.50;
     const total = dias * valorDia;
-    document.getElementById('calcResultado').innerHTML = `R$ ${total.toFixed(2)}`;
+    document.getElementById('calcResultado').textContent = `R$ ${total.toFixed(2)}`;
   }
   
   function exportarMultas() {
@@ -279,11 +279,18 @@ const usuarios = [
     showToast('Relatório de multas exportado com sucesso!');
   }
   
+  let toastTimeout = null;
   function showToast(msg, type = 'success') {
     const toast = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
+    const toastMsg = document.getElementById('toast-msg');
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = msg;
     toast.className = `toast show ${type}`;
-    setTimeout(() => toast.className = 'toast', 3000);
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.className = 'toast';
+      toastTimeout = null;
+    }, 3000);
   }
   
   function preencherSelects() {
@@ -298,38 +305,49 @@ const usuarios = [
     document.getElementById('multaData').value = new Date().toISOString().split('T')[0];
   }
   
-  // Event listeners
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentFilter = this.getAttribute('data-filter');
+  function initMultasApp() {
+    preencherSelects();
+    carregarMultas();
+
+    document.getElementById('multaForm')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      adicionarMulta(event);
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.getAttribute('data-filter');
+        renderMultasTable();
+      });
+    });
+
+    document.getElementById('searchMulta')?.addEventListener('input', (e) => {
+      currentSearch = e.target.value.toLowerCase();
       renderMultasTable();
     });
-  });
-  
-  document.getElementById('searchMulta')?.addEventListener('input', (e) => {
-    currentSearch = e.target.value.toLowerCase();
-    renderMultasTable();
-  });
-  
-  // Fechar modal ao clicar fora
-  document.getElementById('modalExcluir')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('modalExcluir')) {
-      fecharModalExcluir();
-    }
-  });
-  
-  // Tecla ESC fecha modal
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      fecharModalExcluir();
-    }
-  });
-  
-  // Inicialização
-  preencherSelects();
-  carregarMultas();
+
+    document.getElementById('multaTipo')?.addEventListener('change', atualizarValorSugerido);
+    document.getElementById('multaLivro')?.addEventListener('change', atualizarValorSugerido);
+    document.getElementById('multaDias')?.addEventListener('input', atualizarValorSugerido);
+    document.getElementById('calcDias')?.addEventListener('input', calcularMulta);
+    document.getElementById('calcValorDia')?.addEventListener('input', calcularMulta);
+
+    document.getElementById('modalExcluir')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalExcluir')) {
+        fecharModalExcluir();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        fecharModalExcluir();
+      }
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', initMultasApp);
   
   // Expor funções globais
   window.adicionarMulta = adicionarMulta;

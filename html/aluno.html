@@ -331,12 +331,15 @@
     });
 
     // Sistema de Toast
+    let toastTimeout;
     function showToast(msg, type = 'success') {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
       toastMsg.textContent = msg;
       toast.className = `toast show ${type}`;
-      setTimeout(() => {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
         toast.className = 'toast';
       }, 3000);
     }

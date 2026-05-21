@@ -64,7 +64,7 @@
         <div class="form-card-header">
           <h3>➕ Adicionar nova multa</h3>
         </div>
-        <form onsubmit="adicionarMulta(event)">
+        <form id="multaForm">
           <div class="field-row">
             <div class="field-group">
               <label>Usuário *</label>
@@ -82,7 +82,7 @@
           <div class="field-row">
             <div class="field-group">
               <label>Tipo de multa *</label>
-              <select id="multaTipo" required onchange="atualizarValorSugerido()">
+              <select id="multaTipo" required>
                 <option value="">Selecione o tipo</option>
                 <option value="atraso">Atraso (R$ 0,50/dia)</option>
                 <option value="dano">Dano ao livro</option>
@@ -92,7 +92,7 @@
             </div>
             <div class="field-group">
               <label>Dias de atraso (se aplicável)</label>
-              <input type="number" id="multaDias" placeholder="Ex: 5" onchange="atualizarValorSugerido()" />
+              <input type="number" id="multaDias" placeholder="Ex: 5" />
             </div>
           </div>
           <div class="field-row">

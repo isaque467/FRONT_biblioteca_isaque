@@ -121,7 +121,7 @@
           </div>
         </div>
  
-        <form class="auth-form" onsubmit="handleLogin(event)">
+        <form id="loginForm" class="auth-form">
           <div class="field-group">
             <label for="login-email">E-mail ou matrícula</label>
             <div class="input-wrap">
@@ -174,7 +174,7 @@
           <p>Preencha seus dados para se cadastrar</p>
         </div>
  
-        <form class="auth-form" onsubmit="handleCadastro(event)">
+        <form id="cadastroForm" class="auth-form">
  
           <div class="field-group">
             <label for="cad-tipo">Tipo de conta</label>
@@ -321,11 +321,22 @@
     }
  
     // Show toast
+    let toastTimeout = null;
     function showToast(msg, type = 'info') {
       const t = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
+      const toastMsg = document.getElementById('toast-msg');
+      if (!t || !toastMsg) return;
+      toastMsg.textContent = msg;
       t.className = 'toast show ' + type;
-      setTimeout(() => t.className = 'toast', 3000);
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        t.className = 'toast';
+        toastTimeout = null;
+      }, 3000);
+    }
+ 
+    function validateEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     }
  
     // Form handlers
@@ -341,19 +352,27 @@
     function handleCadastro(e) {
       e.preventDefault();
       const tipo = document.getElementById('cad-tipo').value;
-      const nome = document.getElementById('cad-nome').value;
-      const email = document.getElementById('cad-email').value;
+      const nome = document.getElementById('cad-nome').value.trim();
+      const email = document.getElementById('cad-email').value.trim();
       const senha = document.getElementById('cad-senha').value;
       const confirma = document.getElementById('cad-confirma').value;
       const termos = document.getElementById('cad-termos').checked;
       if (!tipo || !nome || !email || !senha) { showToast('Preencha todos os campos obrigatórios.', 'error'); return; }
+      if (!validateEmail(email)) { showToast('Informe um e-mail válido.', 'error'); return; }
+      if (senha.length < 8) { showToast('Senha deve ter no mínimo 8 caracteres.', 'error'); return; }
       if (senha !== confirma) { showToast('As senhas não coincidem.', 'error'); return; }
       if (!termos) { showToast('Aceite os termos de uso para continuar.', 'error'); return; }
       showToast('Conta criada com sucesso! Verifique seu e-mail.', 'success');
     }
  
+    function initAuthPage() {
+      document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+      document.getElementById('cadastroForm')?.addEventListener('submit', handleCadastro);
+      updateIndicator('login');
+    }
+ 
     // Init indicator
-    window.addEventListener('load', () => updateIndicator('login'));
+    window.addEventListener('DOMContentLoaded', initAuthPage);
   </script>
 </body>
 </html>

@@ -45,6 +45,53 @@ let nextDevolucaoId = 2;
 let nextReservaId = 3;
 let nextAtividadeId = 5;
 
+const STORAGE_KEY = 'biblioteca_app_state';
+let toastTimeout = null;
+let currentLoanFilter = 'all';
+
+function saveBibliotecaState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    biblioteca,
+    nextLivroId,
+    nextUsuarioId,
+    nextEmprestimoId,
+    nextDevolucaoId,
+    nextReservaId,
+    nextAtividadeId
+  }));
+}
+
+function loadBibliotecaState() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
+  try {
+    const state = JSON.parse(raw);
+    if (state?.biblioteca) {
+      biblioteca = state.biblioteca;
+      nextLivroId = state.nextLivroId ?? nextLivroId;
+      nextUsuarioId = state.nextUsuarioId ?? nextUsuarioId;
+      nextEmprestimoId = state.nextEmprestimoId ?? nextEmprestimoId;
+      nextDevolucaoId = state.nextDevolucaoId ?? nextDevolucaoId;
+      nextReservaId = state.nextReservaId ?? nextReservaId;
+      nextAtividadeId = state.nextAtividadeId ?? nextAtividadeId;
+    }
+  } catch (error) {
+    console.warn('Não foi possível carregar estado do localStorage', error);
+  }
+}
+
+function findUsuarioById(id) {
+  return biblioteca.usuarios.find(u => u.id === id) || null;
+}
+
+function findLivroById(id) {
+  return biblioteca.livros.find(l => l.id === id) || null;
+}
+
+function getUsuarioByLoginInput(input) {
+  return biblioteca.usuarios.find(u => u.email === input || u.matricula === input) || null;
+}
+
 // Dados mensais para gráfico
 const dadosMensais = {
   emprestimos: [342, 398, 421, 385, 407, 289, 356, 412, 398, 367, 345, 389],
@@ -56,9 +103,14 @@ const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "O
 function showToast(msg, type = 'success') {
   const toast = document.getElementById('toast');
   const toastMsg = document.getElementById('toast-msg');
+  if (!toast || !toastMsg) return;
   toastMsg.textContent = msg;
   toast.className = `toast show ${type}`;
-  setTimeout(() => toast.className = 'toast', 3000);
+  if (toastTimeout) clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.className = 'toast';
+    toastTimeout = null;
+  }, 3000);
 }
 
 function addAtividade(descricao, tipo) {
@@ -109,62 +161,90 @@ function fecharFormUsuario() { document.getElementById('formUsuario').classList.
 // Cadastrar Livro
 function cadastrarLivro(event) {
   event.preventDefault();
-  const novoTitulo = document.getElementById('livroTitulo').value;
+  const titulo = document.getElementById('livroTitulo').value.trim();
+  const autor = document.getElementById('livroAutor').value.trim();
+  const ano = parseInt(document.getElementById('livroAno').value, 10) || 0;
+  const genero = document.getElementById('livroGenero').value.trim();
+  const exemplares = parseInt(document.getElementById('livroExemplares').value, 10);
+  const isbn = document.getElementById('livroIsbn').value.trim();
+
+  if (!titulo || !autor || !genero || Number.isNaN(exemplares) || exemplares <= 0) {
+    showToast('Preencha todos os campos obrigatórios do livro.', 'error');
+    return;
+  }
+
   const novoLivro = {
     id: nextLivroId++,
-    titulo: novoTitulo,
-    autor: document.getElementById('livroAutor').value,
-    ano: parseInt(document.getElementById('livroAno').value) || 0,
-    genero: document.getElementById('livroGenero').value,
-    exemplares: parseInt(document.getElementById('livroExemplares').value),
-    disponiveis: parseInt(document.getElementById('livroExemplares').value),
-    isbn: document.getElementById('livroIsbn').value
+    titulo,
+    autor,
+    ano,
+    genero,
+    exemplares,
+    disponiveis: exemplares,
+    isbn
   };
   biblioteca.livros.push(novoLivro);
+  saveBibliotecaState();
   renderAcervo();
   fecharFormLivro();
-  addAtividade(`Novo livro adicionado: "${novoTitulo}"`, "cadastro");
-  showToast(`Livro "${novoTitulo}" adicionado com sucesso!`);
+  addAtividade(`Novo livro adicionado: "${titulo}"`, "cadastro");
+  showToast(`Livro "${titulo}" adicionado com sucesso!`);
   atualizarDashboardStats();
 }
 
 // Cadastrar Usuário
 function cadastrarUsuario(event) {
   event.preventDefault();
-  const novoNome = document.getElementById('userNome').value;
-  const novoSobrenome = document.getElementById('userSobrenome').value;
+  const nome = document.getElementById('userNome').value.trim();
+  const sobrenome = document.getElementById('userSobrenome').value.trim();
+  const email = document.getElementById('userEmail').value.trim();
+  const matricula = document.getElementById('userMatricula').value.trim();
+  const tipo = document.getElementById('userTipo').value;
+  const telefone = document.getElementById('userTelefone').value.trim();
+
+  if (!nome || !sobrenome || !email || !matricula || !tipo) {
+    showToast('Preencha todos os campos obrigatórios do usuário.', 'error');
+    return;
+  }
+
   const novoUsuario = {
     id: nextUsuarioId++,
-    nome: novoNome,
-    sobrenome: novoSobrenome,
-    email: document.getElementById('userEmail').value,
-    matricula: document.getElementById('userMatricula').value,
-    tipo: document.getElementById('userTipo').value,
-    telefone: document.getElementById('userTelefone').value,
+    nome,
+    sobrenome,
+    email,
+    matricula,
+    tipo,
+    telefone,
     endereco: ""
   };
   biblioteca.usuarios.push(novoUsuario);
+  saveBibliotecaState();
   renderUsuarios();
   fecharFormUsuario();
-  addAtividade(`Novo usuário cadastrado: ${novoNome} ${novoSobrenome}`, "cadastro");
-  showToast(`Usuário ${novoNome} cadastrado com sucesso!`);
+  addAtividade(`Novo usuário cadastrado: ${nome} ${sobrenome}`, "cadastro");
+  showToast(`Usuário ${nome} cadastrado com sucesso!`);
   atualizarDashboardStats();
 }
 
 // Registrar Empréstimo
 function registrarEmprestimo(event) {
   event.preventDefault();
-  const usuarioInput = document.getElementById('emprestimoUsuario').value;
-  const livroId = parseInt(document.getElementById('emprestimoLivro').value);
+  const usuarioInput = document.getElementById('emprestimoUsuario').value.trim();
+  const livroId = parseInt(document.getElementById('emprestimoLivro').value, 10);
   const dataInicio = document.getElementById('emprestimoDataInicio').value;
   const dataFim = document.getElementById('emprestimoDataFim').value;
-  
-  const usuario = biblioteca.usuarios.find(u => u.email === usuarioInput || u.matricula === usuarioInput);
+
+  if (!usuarioInput || Number.isNaN(livroId) || !dataInicio || !dataFim) {
+    showToast('Preencha todos os campos do empréstimo.', 'error');
+    return;
+  }
+
+  const usuario = getUsuarioByLoginInput(usuarioInput);
   if (!usuario) { showToast('Usuário não encontrado!', 'error'); return; }
-  
-  const livro = biblioteca.livros.find(l => l.id === livroId);
+
+  const livro = findLivroById(livroId);
   if (!livro || livro.disponiveis <= 0) { showToast('Livro indisponível!', 'error'); return; }
-  
+
   const novoEmprestimo = {
     id: nextEmprestimoId++,
     usuarioId: usuario.id,
@@ -177,6 +257,7 @@ function registrarEmprestimo(event) {
   };
   biblioteca.emprestimos.push(novoEmprestimo);
   livro.disponiveis--;
+  saveBibliotecaState();
   renderEmprestimos();
   fecharFormEmprestimo();
   addAtividade(`Empréstimo: "${livro.titulo}" para ${usuario.nome}`, "emprestimo");
@@ -216,6 +297,7 @@ function registrarDevolucao(event) {
     multa: multa,
     observacoes: document.getElementById('devolucaoObs')?.value || ''
   });
+  saveBibliotecaState();
   
   renderActiveLoans();
   renderRecentReturns();
@@ -231,6 +313,13 @@ function renderAcervo() {
   const search = document.getElementById('searchAcervo')?.value.toLowerCase() || '';
   const filtered = biblioteca.livros.filter(l => l.titulo.toLowerCase().includes(search) || l.autor.toLowerCase().includes(search));
   const tbody = document.getElementById('bookTableBody');
+  if (!tbody) return;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="no-results">Nenhum livro encontrado</td></tr>';
+    return;
+  }
+
   tbody.innerHTML = filtered.map(l => `
     <tr>
       <td><strong>${l.titulo}</strong></td>
@@ -246,31 +335,33 @@ function renderAcervo() {
 
 function renderEmprestimos() {
   const tbody = document.getElementById('loanTableBody');
-  tbody.innerHTML = biblioteca.emprestimos.map(e => {
-    const usuario = biblioteca.usuarios.find(u => u.id === e.usuarioId);
-    const livro = biblioteca.livros.find(l => l.id === e.livroId);
+  if (!tbody) return;
+
+  let emprestimos = biblioteca.emprestimos;
+  if (currentLoanFilter !== 'all') {
+    emprestimos = emprestimos.filter(e => e.status === currentLoanFilter);
+  }
+
+  tbody.innerHTML = emprestimos.map(e => {
+    const usuario = findUsuarioById(e.usuarioId);
+    const livro = findLivroById(e.livroId);
     const statusClass = e.status === 'active' ? 'active' : (e.status === 'overdue' ? 'overdue' : 'returned');
     const statusText = e.status === 'active' ? 'Ativo' : (e.status === 'overdue' ? 'Atrasado' : 'Devolvido');
     return `<tr><td>${usuario?.nome || '-'}</td><td>${livro?.titulo || '-'}</td><td>${e.dataInicio}</td><td>${e.dataFim}</td><td><span class="status-badge ${statusClass}">${statusText}</span></td><td><button class="btn-icon" onclick="showToast('Detalhes do empréstimo')">🔍</button></td></tr>`;
   }).join('');
-  
-  // Filtrar
+
+  if (emprestimos.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="no-results">Nenhum empréstimo encontrado</td></tr>';
+  }
+}
+
+function setupEmprestimoFilters() {
   document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      const filter = this.getAttribute('data-filter');
-      let filtered = biblioteca.emprestimos;
-      if (filter === 'active') filtered = biblioteca.emprestimos.filter(e => e.status === 'active');
-      if (filter === 'overdue') filtered = biblioteca.emprestimos.filter(e => e.status === 'overdue');
-      if (filter === 'returned') filtered = biblioteca.emprestimos.filter(e => e.status === 'returned');
-      tbody.innerHTML = filtered.map(e => {
-        const usuario = biblioteca.usuarios.find(u => u.id === e.usuarioId);
-        const livro = biblioteca.livros.find(l => l.id === e.livroId);
-        const statusClass = e.status === 'active' ? 'active' : (e.status === 'overdue' ? 'overdue' : 'returned');
-        const statusText = e.status === 'active' ? 'Ativo' : (e.status === 'overdue' ? 'Atrasado' : 'Devolvido');
-        return `<tr><td>${usuario?.nome || '-'}</td><td>${livro?.titulo || '-'}</td><td>${e.dataInicio}</td><td>${e.dataFim}</td><td><span class="status-badge ${statusClass}">${statusText}</span></td><td><button class="btn-icon">🔍</button></td></tr>`;
-      }).join('');
+      btn.classList.add('active');
+      currentLoanFilter = btn.dataset.filter || 'all';
+      renderEmprestimos();
     });
   });
 }
@@ -279,6 +370,13 @@ function renderUsuarios() {
   const search = document.getElementById('searchUsuario')?.value.toLowerCase() || '';
   const filtered = biblioteca.usuarios.filter(u => u.nome.toLowerCase().includes(search) || u.matricula.includes(search) || u.email.toLowerCase().includes(search));
   const grid = document.getElementById('usersGrid');
+  if (!grid) return;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results">Nenhum usuário encontrado</div>';
+    return;
+  }
+
   grid.innerHTML = filtered.map(u => `
     <div class="user-card">
       <div class="user-avatar-card">${u.nome.charAt(0)}${u.sobrenome.charAt(0)}</div>
@@ -363,7 +461,7 @@ function renderRelatorios() {
   
   // Taxa de devolução
   const totalDevolucoes = dadosMensais.devolucoes.reduce((a, b) => a + b, 0);
-  const taxa = ((totalDevolucoes / totalEmprestimos) * 100).toFixed(1);
+  const taxa = totalEmprestimos ? ((totalDevolucoes / totalEmprestimos) * 100).toFixed(1) : '0.0';
   document.getElementById('relTaxaDevolucao').innerHTML = `Total devoluções: ${totalDevolucoes}<br>Taxa: ${taxa}%`;
   
   // Livros mais populares
@@ -425,6 +523,7 @@ function exportarRelatorio(formato) {
 
 // Event Listeners e inicialização
 window.addEventListener('DOMContentLoaded', () => {
+  loadBibliotecaState();
   renderAcervo();
   renderEmprestimos();
   renderUsuarios();
@@ -432,6 +531,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderRecentReturns();
   renderDashboard();
   renderRelatorios();
+  setupEmprestimoFilters();
   
   document.getElementById('searchAcervo')?.addEventListener('input', () => renderAcervo());
   document.getElementById('searchUsuario')?.addEventListener('input', () => renderUsuarios());

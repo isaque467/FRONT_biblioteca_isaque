@@ -199,11 +199,15 @@
       adicionarMulta(livro, motivo, valor);
     }
 
+    let toastTimeout;
     function showToast(msg, type = 'success') {
       const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
       toast.className = `toast show ${type}`;
-      setTimeout(() => toast.className = 'toast', 3000);
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.className = 'toast', 3000);
     }
 
     // Inicialização
