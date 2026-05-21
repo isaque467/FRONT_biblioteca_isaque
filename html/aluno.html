@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Biblioteca Escolar — Meu Espaço</title>
   <link rel="stylesheet" href="aluno.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
 </head>
+
 <body>
 
   <!-- Fundo decorativo suave -->
@@ -18,10 +22,10 @@
       <div class="logo-area">
         <div class="logo-icon-sm">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9"/>
-            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6"/>
-            <rect x="8" y="27" width="32" height="4" rx="2" fill="currentColor" opacity="0.4"/>
-            <rect x="10" y="34" width="28" height="3" rx="1.5" fill="currentColor" opacity="0.25"/>
+            <rect x="6" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.9" />
+            <rect x="22" y="6" width="14" height="18" rx="2" fill="currentColor" opacity="0.6" />
+            <rect x="8" y="27" width="32" height="4" rx="2" fill="currentColor" opacity="0.4" />
+            <rect x="10" y="34" width="28" height="3" rx="1.5" fill="currentColor" opacity="0.25" />
           </svg>
         </div>
         <span class="logo-text-dark">Bibliotheca</span>
@@ -44,7 +48,9 @@
         </div>
         <button class="logout-btn" id="logoutBtn" aria-label="Sair">
           <svg viewBox="0 0 20 20" fill="none">
-            <path d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M7.5 17.5h-5A.833.833 0 011.667 16.667V3.333A.833.833 0 012.5 2.5h5M13.333 14.167L17.5 10l-4.167-4.167M17.5 10h-10"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span>Sair</span>
         </button>
@@ -63,7 +69,8 @@
         <div class="welcome-card">
           <div class="welcome-text">
             <h1>Olá, Ana ✨</h1>
-            <p>Bem-vinda à sua estante digital. Explore novos títulos, acompanhe suas leituras e descubra histórias incríveis.</p>
+            <p>Bem-vinda à sua estante digital. Explore novos títulos, acompanhe suas leituras e descubra histórias
+              incríveis.</p>
             <div class="welcome-badge">
               <span>📚 Hoje é dia de explorar o acervo!</span>
             </div>
@@ -131,7 +138,8 @@
                   <span>William Gibson</span>
                   <span class="book-tag">Ficção científica</span>
                 </div>
-                <button class="btn-reserve-sm" onclick="showToast('Solicitação enviada! Você receberá uma notificação.')">Reservar</button>
+                <button class="btn-reserve-sm"
+                  onclick="showToast('Solicitação enviada! Você receberá uma notificação.')">Reservar</button>
               </div>
               <div class="rec-item">
                 <div class="rec-cover emoji-cover">📖</div>
@@ -140,7 +148,8 @@
                   <span>Harper Lee</span>
                   <span class="book-tag">Clássico</span>
                 </div>
-                <button class="btn-reserve-sm" onclick="showToast('Reserva registrada. Disponível em breve.')">Reservar</button>
+                <button class="btn-reserve-sm"
+                  onclick="showToast('Reserva registrada. Disponível em breve.')">Reservar</button>
               </div>
               <div class="rec-item">
                 <div class="rec-cover emoji-cover">🌌</div>
@@ -149,7 +158,8 @@
                   <span>Isaac Asimov</span>
                   <span class="book-tag">Ficção científica</span>
                 </div>
-                <button class="btn-reserve-sm" onclick="showToast('Adicionado à sua fila de reserva.')">Reservar</button>
+                <button class="btn-reserve-sm"
+                  onclick="showToast('Adicionado à sua fila de reserva.')">Reservar</button>
               </div>
             </div>
           </div>
@@ -195,7 +205,10 @@
         <div class="acervo-header">
           <h2>📚 Acervo da Biblioteca</h2>
           <div class="search-bar">
-            <svg class="search-icon" viewBox="0 0 20 20" fill="none"><path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M9.167 15.833a6.667 6.667 0 100-13.334 6.667 6.667 0 000 13.334zM17.5 17.5l-3.625-3.625"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
             <input type="text" id="searchInput" placeholder="Pesquisar por título, autor..." />
           </div>
         </div>
@@ -223,62 +236,68 @@
             <span>05/06/2025</span>
             <span>20/06/2025</span>
             <span><span class="status-badge warning">Em dia (2d)</span></span>
-            <span><button class="btn-link" onclick="showToast('Renovação solicitada. Aguarde confirmação.')">Renovar</button></span>
+            <span><button class="btn-link"
+                onclick="showToast('Renovação solicitada. Aguarde confirmação.')">Renovar</button></span>
           </div>
           <div class="loan-row">
             <span><strong>Dom Quixote</strong> (Miguel de Cervantes)</span>
             <span>08/06/2025</span>
             <span>25/06/2025</span>
             <span><span class="status-badge success">Em dia</span></span>
-            <span><button class="btn-link" onclick="showToast('Renovação por +7 dias solicitada.')">Renovar</button></span>
+            <span><button class="btn-link"
+                onclick="showToast('Renovação por +7 dias solicitada.')">Renovar</button></span>
           </div>
           <div class="loan-row">
             <span><strong>O Pequeno Príncipe</strong> (Saint-Exupéry)</span>
             <span>10/06/2025</span>
             <span>28/06/2025</span>
             <span><span class="status-badge success">Em dia</span></span>
-            <span><button class="btn-link" onclick="showToast('Renovação disponível por mais 7 dias.')">Renovar</button></span>
+            <span><button class="btn-link"
+                onclick="showToast('Renovação disponível por mais 7 dias.')">Renovar</button></span>
           </div>
         </div>
-    </section>
+      </section>
 
-  <!-- Toast message -->
-  <div class="toast" id="toast">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor" stroke-width="1.5"/></svg>
-    <span id="toast-msg"></span>
-  </div>
+      <!-- Toast message -->
+      <div class="toast" id="toast">
+        <svg viewBox="0 0 20 20" fill="none">
+          <path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 6.667v3.333M10 13.333h.008" stroke="currentColor"
+            stroke-width="1.5" />
+        </svg>
+        <span id="toast-msg"></span>
+      </div>
 
-  <script>
-    // Base de dados do acervo
-    const bibliotecaAcervo = [
-      { titulo: "O Nome do Vento", autor: "Patrick Rothfuss", ano: 2007, genero: "Fantasia", capa: "📖", disponivel: false },
-      { titulo: "Dom Quixote", autor: "Miguel de Cervantes", ano: 1605, genero: "Clássico", capa: "📘", disponivel: true },
-      { titulo: "O Pequeno Príncipe", autor: "Saint-Exupéry", ano: 1943, genero: "Fábula", capa: "🌟", disponivel: false },
-      { titulo: "Neuromancer", autor: "William Gibson", ano: 1984, genero: "Ficção científica", capa: "💻", disponivel: true },
-      { titulo: "O Sol é para Todos", autor: "Harper Lee", ano: 1960, genero: "Drama", capa: "⚖️", disponivel: true },
-      { titulo: "Fundação", autor: "Isaac Asimov", ano: 1951, genero: "Ficção científica", capa: "🚀", disponivel: false },
-      { titulo: "Verity", autor: "Colleen Hoover", ano: 2018, genero: "Suspense", capa: "📕", disponivel: true },
-      { titulo: "1984", autor: "George Orwell", ano: 1949, genero: "Distopia", capa: "📚", disponivel: false },
-      { titulo: "Duna", autor: "Frank Herbert", ano: 1965, genero: "Ficção científica", capa: "🏜️", disponivel: false },
-      { titulo: "O Hobbit", autor: "J.R.R. Tolkien", ano: 1937, genero: "Fantasia", capa: "🧙", disponivel: true }
-    ];
+      <script>
+        // Base de dados do acervo
+        const bibliotecaAcervo = [
+          { titulo: "O Nome do Vento", autor: "Patrick Rothfuss", ano: 2007, genero: "Fantasia", capa: "📖", disponivel: false },
+          { titulo: "Dom Quixote", autor: "Miguel de Cervantes", ano: 1605, genero: "Clássico", capa: "📘", disponivel: true },
+          { titulo: "O Pequeno Príncipe", autor: "Saint-Exupéry", ano: 1943, genero: "Fábula", capa: "🌟", disponivel: false },
+          { titulo: "Neuromancer", autor: "William Gibson", ano: 1984, genero: "Ficção científica", capa: "💻", disponivel: true },
+          { titulo: "O Sol é para Todos", autor: "Harper Lee", ano: 1960, genero: "Drama", capa: "⚖️", disponivel: true },
+          { titulo: "Fundação", autor: "Isaac Asimov", ano: 1951, genero: "Ficção científica", capa: "🚀", disponivel: false },
+          { titulo: "Verity", autor: "Colleen Hoover", ano: 2018, genero: "Suspense", capa: "📕", disponivel: true },
+          { titulo: "1984", autor: "George Orwell", ano: 1949, genero: "Distopia", capa: "📚", disponivel: false },
+          { titulo: "Duna", autor: "Frank Herbert", ano: 1965, genero: "Ficção científica", capa: "🏜️", disponivel: false },
+          { titulo: "O Hobbit", autor: "J.R.R. Tolkien", ano: 1937, genero: "Fantasia", capa: "🧙", disponivel: true }
+        ];
 
-    // Função para renderizar acervo (com filtro)
-    function renderAcervo(filtro = "") {
-      const grid = document.getElementById("bookGrid");
-      if (!grid) return;
-      const filtroLower = filtro.toLowerCase();
-      const livrosFiltrados = bibliotecaAcervo.filter(book => 
-        book.titulo.toLowerCase().includes(filtroLower) || 
-        book.autor.toLowerCase().includes(filtroLower)
-      );
-      
-      if (livrosFiltrados.length === 0) {
-        grid.innerHTML = `<div class="no-results">Nenhum livro encontrado. Tente outro termo.</div>`;
-        return;
-      }
-      
-      grid.innerHTML = livrosFiltrados.map(book => `
+        // Função para renderizar acervo (com filtro)
+        function renderAcervo(filtro = "") {
+          const grid = document.getElementById("bookGrid");
+          if (!grid) return;
+          const filtroLower = filtro.toLowerCase();
+          const livrosFiltrados = bibliotecaAcervo.filter(book =>
+            book.titulo.toLowerCase().includes(filtroLower) ||
+            book.autor.toLowerCase().includes(filtroLower)
+          );
+
+          if (livrosFiltrados.length === 0) {
+            grid.innerHTML = `<div class="no-results">Nenhum livro encontrado. Tente outro termo.</div>`;
+            return;
+          }
+
+          grid.innerHTML = livrosFiltrados.map(book => `
         <div class="book-card">
           <div class="book-cover">${book.capa}</div>
           <div class="book-info">
@@ -288,98 +307,99 @@
             <span class="book-genre">${book.genero}</span>
           </div>
           <div class="book-actions">
-            ${book.disponivel ? 
-              `<button class="btn-reserve" onclick="showToast('Reserva realizada! O livro "${book.titulo}" foi reservado.')">Reservar</button>` : 
+            ${book.disponivel ?
+              `<button class="btn-reserve" onclick="showToast('Reserva realizada! O livro "${book.titulo}" foi reservado.')">Reservar</button>` :
               `<span class="indisponivel">Indisponível</span>`
             }
           </div>
         </div>
       `).join('');
-    }
-
-    // Navegação entre seções
-    function navigateTo(sectionId) {
-      // Atualiza botões
-      document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.nav-link[data-section="${sectionId}"]`).classList.add('active');
-      // Mostra seção correta
-      document.querySelectorAll('.dashboard-section').forEach(section => section.classList.remove('active'));
-      document.getElementById(`section-${sectionId}`).classList.add('active');
-      
-      // Se for acervo, garantir que a pesquisa seja reaplicada (preserva termo)
-      if (sectionId === 'acervo') {
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) renderAcervo(searchInput.value);
-      }
-    }
-
-    // Eventos de navegação
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        const section = link.getAttribute('data-section');
-        navigateTo(section);
-      });
-    });
-
-    // Logout com toast e redirecionamento simbólico
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-      showToast('Sessão encerrada. Até logo!', 'info');
-      setTimeout(() => {
-        alert("Redirecionaria para tela de login (simulação).");
-        // Aqui faria redirect para index.html no sistema real
-      }, 1000);
-    });
-
-    // Sistema de Toast
-    let toastTimeout;
-    function showToast(msg, type = 'success') {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-msg');
-      if (!toast || !toastMsg) return;
-      toastMsg.textContent = msg;
-      toast.className = `toast show ${type}`;
-      if (toastTimeout) clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.className = 'toast';
-      }, 3000);
-    }
-
-    // Evento de pesquisa no acervo
-    const searchField = document.getElementById('searchInput');
-    if (searchField) {
-      searchField.addEventListener('input', (e) => {
-        if (document.getElementById('section-acervo').classList.contains('active')) {
-          renderAcervo(e.target.value);
         }
-      });
-    }
 
-    // Inicialização: dashboard ativo + carregar acervo
-    window.addEventListener('DOMContentLoaded', () => {
-      renderAcervo('');
-      
-      // Atualiza dinamicamente link "Ver todos" para funcionar
-      document.querySelectorAll('.link-sm[data-section]').forEach(el => {
-        el.addEventListener('click', (e) => {
-          e.preventDefault();
-          const sec = el.getAttribute('data-section');
-          if (sec) navigateTo(sec);
+        // Navegação entre seções
+        function navigateTo(sectionId) {
+          // Atualiza botões
+          document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+          document.querySelector(`.nav-link[data-section="${sectionId}"]`).classList.add('active');
+          // Mostra seção correta
+          document.querySelectorAll('.dashboard-section').forEach(section => section.classList.remove('active'));
+          document.getElementById(`section-${sectionId}`).classList.add('active');
+
+          // Se for acervo, garantir que a pesquisa seja reaplicada (preserva termo)
+          if (sectionId === 'acervo') {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) renderAcervo(searchInput.value);
+          }
+        }
+
+        // Eventos de navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', (e) => {
+            const section = link.getAttribute('data-section');
+            navigateTo(section);
+          });
         });
-      });
-      
-      // manualmente tratar alguns botões de reserva da dashboard
-    });
 
-    // event listener global para botões de reserva simples (já usado em onclick)
-    window.showToast = showToast;
-    window.navigateTo = navigateTo;
+        // Logout com toast e redirecionamento simbólico
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+          showToast('Sessão encerrada. Até logo!', 'info');
+          setTimeout(() => {
+            alert("Redirecionaria para tela de login (simulação).");
+            // Aqui faria redirect para index.html no sistema real
+          }, 1000);
+        });
 
-    // Adiciona algumas interações extras (para renovação e reservas)
-    document.querySelectorAll('.btn-reserve-sm').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-    });
-  </script>
+        // Sistema de Toast
+        let toastTimeout;
+        function showToast(msg, type = 'success') {
+          const toast = document.getElementById('toast');
+          const toastMsg = document.getElementById('toast-msg');
+          if (!toast || !toastMsg) return;
+          toastMsg.textContent = msg;
+          toast.className = `toast show ${type}`;
+          if (toastTimeout) clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            toast.className = 'toast';
+          }, 3000);
+        }
+
+        // Evento de pesquisa no acervo
+        const searchField = document.getElementById('searchInput');
+        if (searchField) {
+          searchField.addEventListener('input', (e) => {
+            if (document.getElementById('section-acervo').classList.contains('active')) {
+              renderAcervo(e.target.value);
+            }
+          });
+        }
+
+        // Inicialização: dashboard ativo + carregar acervo
+        window.addEventListener('DOMContentLoaded', () => {
+          renderAcervo('');
+
+          // Atualiza dinamicamente link "Ver todos" para funcionar
+          document.querySelectorAll('.link-sm[data-section]').forEach(el => {
+            el.addEventListener('click', (e) => {
+              e.preventDefault();
+              const sec = el.getAttribute('data-section');
+              if (sec) navigateTo(sec);
+            });
+          });
+
+          // manualmente tratar alguns botões de reserva da dashboard
+        });
+
+        // event listener global para botões de reserva simples (já usado em onclick)
+        window.showToast = showToast;
+        window.navigateTo = navigateTo;
+
+        // Adiciona algumas interações extras (para renovação e reservas)
+        document.querySelectorAll('.btn-reserve-sm').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        });
+      </script>
 </body>
+
 </html>
